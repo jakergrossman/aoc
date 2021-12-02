@@ -25,7 +25,7 @@ fi
 
 # run specific file
 for file in $FILES; do
-    if [ "day$1.lsp" = "$file" ]; then
+    if [ "day$1.lsp" = "$file" ] || [ "$1.lsp" = "$file" ]; then
         run_file "$file"
         exit 0
     fi
