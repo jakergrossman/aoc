@@ -1,0 +1,37 @@
+#!/bin/sh
+
+FILES=$(find . -name 'day*.lsp' -printf '%P\n')
+
+if [ "$#" -eq 0 ]; then
+    >&2 echo '[ERROR] No day selected!'
+    >&2 echo '[ERROR] Completed days:'
+    echo "$FILES" | sed 's/\(\w\+\).lsp/[ERROR]   \1/' 1>&2
+    exit 1
+fi
+
+run_file () {
+    echo "--- $1 ---"
+    gcl -eval < "$1" | tail -n 5 # only care about answers
+    echo
+}
+
+# run all files
+if [ "$1" = "all" ]; then
+    for file in $FILES; do
+        run_file "$file"
+    done
+    exit 0
+fi
+
+# run specific file
+for file in $FILES; do
+    if [ "day$1.lsp" = "$file" ]; then
+        run_file "$file"
+        exit 0
+    fi
+done
+
+>&2 echo "[ERROR] Invalid day selected ($1)!"
+>&2 echo "[ERROR] Completed days:"
+echo "$FILES" | sed 's/\(\w\+\).lsp/[ERROR]   \1/' 1>&2
+exit 1
