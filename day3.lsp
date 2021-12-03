@@ -1,54 +1,89 @@
 (load "inputs/input3")
 
 ; count the number of zeros and ones in a specified column
-(defun count-digits (xs col zeros ones)
+(defun get-freq (xs col zeros ones)
   (cond
     ((null xs) (list zeros ones))
     (t (cond
       ((eq (char (car xs) col) #\1)
-          (count-digits (cdr xs) col zeros (+ 1 ones)))
+          (get-freq (cdr xs) col zeros (+ 1 ones)))
 
       ((eq (char (car xs) col) #\0)
-          (count-digits (cdr xs) col (+ 1 zeros) ones))
+          (get-freq (cdr xs) col (+ 1 zeros) ones))
     ))
   )
 )
 
-(setq freq1
-  (loop :for n :below (length (car input)) :collect (count-digits input n 0 0))
+; convert binary digits to decimal
+;
+; in:  list of binary digits, e.g.:      (1 0 1 1 0) (0 1 1 0 0)
+; out: the decimal representation, e.g.: 20 12
+(defun bin-to-dec (n)
+  (reduce (lambda (x y) (+ (* 2 x) y)) n))
+
+(setq digit-freq
+  (loop :for n :below (length (car input)) :collect (get-freq input n 0 0)))
+
+(setq gamma-bin
+  (map 'list
+    (lambda (x)
+      (cond
+        ((< (car x) (cadr x)) 0)
+        (t 1)
+      )
+    )
+    digit-freq
+  )
 )
 
-(setq gamma1
-  (reduce
-    (lambda (x y) (+ (* 2 x) y))
-    (map 'list
-      (lambda (x)
+(setq gamma-dec (bin-to-dec gamma-bin))
+
+(setq epsilon-bin
+  (map 'list
+    (lambda (x)
+      (cond
+        ((< (car x) (cadr x)) 1)
+        (t 0)
+      )
+    )
+    digit-freq
+  )
+)
+
+(setq epsilon-dec (bin-to-dec epsilon-bin))
+
+; find either the oxygen or co2 rating
+(defun find-rating (rating-type xs pos)
+  (cond
+    ((null xs) '())
+    ((eq 1 (length xs)) (car xs))
+    (t
+      (setq freq (get-freq xs pos 0 0))
+      (setq filter
         (cond
-          ((< (car x) (cadr x)) 0)
-          (t 1)
+          ((eq rating-type 'oxygen)
+            ; oxygen rating filter is greater of 1 & 0
+            (cond 
+              ((> (car freq) (cadr freq)) #\0)
+              (t #\1)))
+
+          ((eq rating-type 'co2)
+            ; co2 rating filter is lesser of 1 & 0
+            (cond
+              ((> (car freq) (cadr freq)) #\1)
+              (t #\0)))
         )
       )
-      freq1
+      (find-rating rating-type (remove-if-not (lambda (x) (eq filter (char x pos))) xs) (+ pos 1))
     )
   )
 )
 
-(setq epsilon1
-  (reduce
-    (lambda (x y) (+ (* 2 x) y))
-    (map 'list
-      (lambda (x)
-        (cond
-          ((< (car x) (cadr x)) 1)
-          (t 0)
-        )
-      )
-      freq1
-    )
-  )
-)
+(setq oxygen-rating (parse-integer (find-rating 'oxygen input 0) :radix 2))
+(setq co2-rating (parse-integer (find-rating 'co2 input 0) :radix 2))
 
 ; part1
-(* epsilon1 gamma1)
+(* epsilon-dec gamma-dec)
 
 ; part2
+(* co2-rating oxygen-rating)
