@@ -1,6 +1,6 @@
 #!/bin/sh
 
-FILES=$(find . -name 'day*.lsp' -printf '%P\n')
+FILES=$(find . -name 'day*.lsp' -printf '%P\n' | sort)
 
 if [ "$#" -eq 0 ]; then
     >&2 echo '[ERROR] No day selected!'
