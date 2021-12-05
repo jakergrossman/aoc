@@ -15,10 +15,7 @@
           (get-freq (cdr xs) col zeros (+ 1 ones)))
 
       ((eq (char (car xs) col) #\0)
-          (get-freq (cdr xs) col (+ 1 zeros) ones))
-    ))
-  )
-)
+          (get-freq (cdr xs) col (+ 1 zeros) ones))))))
 
 ; convert binary digits to decimal
 ;
@@ -35,12 +32,8 @@
     (lambda (x)
       (cond
         ((< (car x) (cadr x)) 0)
-        (t 1)
-      )
-    )
-    digit-freq
-  )
-)
+        (t 1)))
+    digit-freq))
 
 (setq gamma-dec (bin-to-dec gamma-bin))
 
@@ -49,12 +42,8 @@
     (lambda (x)
       (cond
         ((< (car x) (cadr x)) 1)
-        (t 0)
-      )
-    )
-    digit-freq
-  )
-)
+        (t 0)))
+    digit-freq))
 
 (setq epsilon-dec (bin-to-dec epsilon-bin))
 
@@ -65,11 +54,12 @@
     ((eq 1 (length xs)) (car xs))
     (t
       (setq freq (get-freq xs pos 0 0))
+
       (setq filter
         (cond
           ((eq rating-type 'oxygen)
             ; oxygen rating filter is greater of 1 & 0
-            (cond 
+            (cond
               ((> (car freq) (cadr freq)) #\0)
               (t #\1)))
 
@@ -77,13 +67,9 @@
             ; co2 rating filter is lesser of 1 & 0
             (cond
               ((> (car freq) (cadr freq)) #\1)
-              (t #\0)))
-        )
-      )
-      (find-rating rating-type (remove-if-not (lambda (x) (eq filter (char x pos))) xs) (+ pos 1))
-    )
-  )
-)
+              (t #\0)))))
+
+      (find-rating rating-type (remove-if-not (lambda (x) (eq filter (char x pos))) xs) (+ pos 1)))))
 
 (setq oxygen-rating (parse-integer (find-rating 'oxygen input 0) :radix 2))
 (setq co2-rating (parse-integer (find-rating 'co2 input 0) :radix 2))

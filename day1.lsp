@@ -13,9 +13,7 @@
   (cond
     ((null tail) 0)
     ((< head (car tail)) (+ 1 (count1 tail)))
-    (t (count1 tail))
-  )
-)
+    (t (count1 tail))))
 
 ; Count the number of times the sum of a 3 count window increases from the last
 (defun count2 (xs prev)
@@ -28,11 +26,7 @@
       (setq sum (+ (+ a b) c))
       (cond
         ((< prev sum) (+ 1 (count2 (cdr xs) sum)))
-        (t (count2 (cdr xs) sum))
-      )
-    )
-  )
-)
+        (t (count2 (cdr xs) sum))))))
 
 (compile 'count1)
 (compile 'count2)

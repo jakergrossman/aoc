@@ -11,11 +11,7 @@
           (subpath1 (cdr input) (- depth (cadr nextmove)) distance))
 
         ((eq (car nextmove) 'down)
-          (subpath1 (cdr input) (+ depth (cadr nextmove)) distance))
-      )
-    )
-  )
-)
+          (subpath1 (cdr input) (+ depth (cadr nextmove)) distance))))))
 
 (defun subpath2 (input depth distance aim)
   (cond
@@ -30,11 +26,7 @@
           (subpath2 (cdr input) depth distance (- aim (cadr nextmove))))
 
         ((eq (car nextmove) 'down)
-          (subpath2 (cdr input) depth distance (+ aim (cadr nextmove))))
-      )
-    )
-  )
-)
+          (subpath2 (cdr input) depth distance (+ aim (cadr nextmove))))))))
 
 (load "./inputs/input2")
 (compile 'subpath1)
