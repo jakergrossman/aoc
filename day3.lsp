@@ -1,4 +1,10 @@
-(load "inputs/input3")
+(defun get-input (filename)
+  (with-open-file (stream filename)
+    (loop for line = (read-line stream nil nil)
+      while (and line (> (length line) 0))
+      collect line)))
+
+(setq input (get-input "inputs/input3.txt"))
 
 ; count the number of zeros and ones in a specified column
 (defun get-freq (xs col zeros ones)

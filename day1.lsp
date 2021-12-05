@@ -1,3 +1,11 @@
+(defun get-input (filename)
+  (with-open-file (stream filename)
+    (loop for line = (read-line stream nil nil)
+      while (and line (> (length line) 0))
+      collect (parse-integer line))))
+
+(setq input (get-input "inputs/input1.txt"))
+
 ; Count the number of times a value increases from the last
 (defun count1 (xs)
   (setq head (car xs))
@@ -26,7 +34,6 @@
   )
 )
 
-(load "./inputs/input1")
 (compile 'count1)
 (compile 'count2)
 
