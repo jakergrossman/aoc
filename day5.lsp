@@ -58,34 +58,26 @@
 
       (draw (- delta-x step-x) (- delta-y step-y) (+ pos-x step-x) (+ pos-y step-y) state))))
 
-(loop :for n :below (length input1)
-  do 
-  (setq input (nth n input1))
-  (setq x1 (caar input))
-  (setq y1 (cadar input))
-  (setq x2 (caadr input))
-  (setq y2 (cadadr input))
+(defun run-input (input state)
+  (loop :for n :below (length input)
+    do
+    (setq movement (nth n input))
+    (setq x1 (caar movement))
+    (setq y1 (cadar movement))
+    (setq x2 (caadr movement))
+    (setq y2 (cadadr movement))
 
-  (setq delta-x (- x2 x1))
-  (setq delta-y (- y2 y1))
-  (draw delta-x delta-y x1 y1 state1))
+    (setq delta-x (- x2 x1))
+    (setq delta-y (- y2 y1))
+    (draw delta-x delta-y x1 y1 state)))
 
 (defun count-values (xs)
   (cond
     ((null xs) 0)
     (t (cond ((> (car xs) 1) (+ 1 (count-values (cdr xs)))) (t (count-values (cdr xs)))))))
 
-(loop :for n :below (length input2)
-  do 
-  (setq input (nth n input2))
-  (setq x1 (caar input))
-  (setq y1 (cadar input))
-  (setq x2 (caadr input))
-  (setq y2 (cadadr input))
-
-  (setq delta-x (- x2 x1))
-  (setq delta-y (- y2 y1))
-  (draw delta-x delta-y x1 y1 state2))
+(run-input input1 state1)
+(run-input input2 state2)
 
 ; part 1
 (reduce '+ (map 'list #'count-values state1))
