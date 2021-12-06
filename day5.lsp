@@ -27,36 +27,25 @@
       (not (eq (caar entry) (caadr entry)))
       (not (eq (cadar entry) (cadadr entry))))))
 
-; create a 'Width' x 'Height' matrix filled with 'value'
-(defun mtx (width height value) (loop :for n :below height :collect (loop :for m :below width :collect value)))
-
 ; only straight lines
 (setq input1 (remove-if-not #'is-straight (get-input "inputs/input5.txt")))
-(setq state1 (mtx 1000 1000 0))
+(setq state1 (make-array '(1000000) :initial-element 0))
 
 ; all lines
 (setq input2 (get-input "inputs/input5.txt"))
-(setq state2 (mtx 1000 1000 0))
+(setq state2 (make-array '(1000000) :initial-element 0))
 
-; increment numbers along a line
-(defun draw (delta-x delta-y pos-x pos-y state)
-  (setq current-value (nth pos-x (nth pos-y state)))
-  (setf (nth pos-x (nth pos-y state)) (+ 1 current-value))
+(defun draw2 (delta-x delta-y pos-x pos-y state)
+  (setq pos (+ (* pos-x 1000) pos-y))
+  (setq current-value (aref state pos))
+  (setf (aref state pos) (+ 1 current-value))
   (cond
     ((and (eq 0 delta-x) (eq 0 delta-y)) state)
     (t
-      (setq step-x
-        (cond
-          ((< delta-x 0) -1)
-          ((> delta-x 0) 1)
-          (t 0)))
-      (setq step-y
-        (cond
-          ((< delta-y 0) -1)
-          ((> delta-y 0) 1)
-          (t 0)))
+      (setq step-x (signum delta-x))
+      (setq step-y (signum delta-y))
 
-      (draw (- delta-x step-x) (- delta-y step-y) (+ pos-x step-x) (+ pos-y step-y) state))))
+      (draw2 (- delta-x step-x) (- delta-y step-y) (+ pos-x step-x) (+ pos-y step-y) state))))
 
 (defun run-input (input state)
   (loop :for n :below (length input)
@@ -69,18 +58,17 @@
 
     (setq delta-x (- x2 x1))
     (setq delta-y (- y2 y1))
-    (draw delta-x delta-y x1 y1 state)))
+    (draw2 delta-x delta-y x1 y1 state))
+  (return-from run-input state))
 
 (defun count-values (xs)
-  (cond
-    ((null xs) 0)
-    (t (cond ((> (car xs) 1) (+ 1 (count-values (cdr xs)))) (t (count-values (cdr xs)))))))
+  (reduce
+    (lambda (x y)
+      (cond
+        ((> y 1) (+ 1 x))
+        (t x)))
+    xs
+    :initial-value 0))
 
-(run-input input1 state1)
-(run-input input2 state2)
-
-; part 1
-(reduce '+ (map 'list #'count-values state1))
-
-; part 2
-(reduce '+ (map 'list #'count-values state2))
+(count-values (run-input input1 state1))
+(count-values (run-input input2 state2))
