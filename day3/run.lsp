@@ -1,10 +1,12 @@
+#!/usr/bin/gcl -f
+
 (defun get-input (filename)
   (with-open-file (stream filename)
     (loop for line = (read-line stream nil nil)
       while (and line (> (length line) 0))
       collect line)))
 
-(setq input (get-input "inputs/input3.txt"))
+(setq input (get-input "input.txt"))
 
 ; count the number of zeros and ones in a specified column
 (defun get-freq (xs col zeros ones)
@@ -74,8 +76,5 @@
 (setq oxygen-rating (parse-integer (find-rating 'oxygen input 0) :radix 2))
 (setq co2-rating (parse-integer (find-rating 'co2 input 0) :radix 2))
 
-; part1
-(* epsilon-dec gamma-dec)
-
-; part2
-(* co2-rating oxygen-rating)
+(format t "Part 1: ~d~%" (* epsilon-dec gamma-dec))
+(format t "Part 2: ~d~%" (* co2-rating oxygen-rating))

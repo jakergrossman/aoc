@@ -1,3 +1,5 @@
+#!/usr/bin/gcl -f
+
 (defun skip-char (line c)
   (cond
     ((null line) "")
@@ -29,7 +31,7 @@
       while line
       collect line)))
 
-(setq lines (get-input "inputs/input4.txt"))
+(setq lines (get-input "input.txt"))
 (setq numbers (parse-nums (car lines) #\,))
 (setq boards (parse-boards (cddr lines)))
 
@@ -135,8 +137,6 @@
 
   (* (car result) (apply '+ unset-values)))
 
-; part 1
-(final-score (bingo1 board-states numbers))
+(format t "Part 1: ~d~%" (final-score (bingo1 board-states numbers)))
 
-; part 2
-(final-score (bingo2 board-states numbers))
+(format t "Part 2: ~d~%" (final-score (bingo2 board-states numbers)))

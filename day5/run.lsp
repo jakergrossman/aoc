@@ -1,3 +1,5 @@
+#!/usr/bin/gcl -f
+
 ; process an input line, returning ((x1 y1) (x2 y2))
 (defun process-line (line)
   (setq left-comma (position #\, line))
@@ -28,11 +30,11 @@
       (not (eq (cadar entry) (cadadr entry))))))
 
 ; only straight lines
-(setq input1 (remove-if-not #'is-straight (get-input "inputs/input5.txt")))
+(setq input2 (get-input "input.txt"))
+(setq input1 (remove-if-not #'is-straight input2))
 (setq state1 (make-array '(1000000) :initial-element 0))
 
 ; all lines
-(setq input2 (get-input "inputs/input5.txt"))
 (setq state2 (make-array '(1000000) :initial-element 0))
 
 (defun draw2 (delta-x delta-y pos-x pos-y state)
@@ -70,5 +72,5 @@
     xs
     :initial-value 0))
 
-(count-values (run-input input1 state1))
-(count-values (run-input input2 state2))
+(format t "Part 1: ~d~%" (count-values (run-input input1 state1)))
+(format t "Part 2: ~d~%" (count-values (run-input input2 state2)))
