@@ -1,5 +1,3 @@
-(load "inputs/input4")
-
 (defun skip-char (line c)
   (cond
     ((null line) "")

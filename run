@@ -21,17 +21,17 @@ if [ "$1" = "all" ]; then
         run_file "$file"
     done
     exit 0
+else
+    for arg in $@; do
+        if echo "$FILES" | grep -q "day$arg.lsp"; then
+            run_file "day$arg.lsp"
+        elif echo "$FILES" | grep -q "$arg.lsp"; then
+            run_file "$arg.lsp"
+        else
+            >&2 echo "[ERROR] Invalid day selected ($arg)!"
+            >&2 echo "[ERROR] Completed days:"
+            echo "$FILES" | sed 's/\(\w\+\).lsp/[ERROR]   \1/' 1>&2
+            exit 1
+        fi
+    done
 fi
-
-# run specific file
-for file in $FILES; do
-    if [ "day$1.lsp" = "$file" ] || [ "$1.lsp" = "$file" ]; then
-        run_file "$file"
-        exit 0
-    fi
-done
-
->&2 echo "[ERROR] Invalid day selected ($1)!"
->&2 echo "[ERROR] Completed days:"
-echo "$FILES" | sed 's/\(\w\+\).lsp/[ERROR]   \1/' 1>&2
-exit 1
