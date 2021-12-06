@@ -1,5 +1,40 @@
 (load "inputs/input4")
 
+(defun skip-char (line c)
+  (cond
+    ((null line) "")
+    ((eq (char line 0) c) (skip-char (subseq line 1) c))
+    (t line)))
+
+(defun parse-nums (line delim)
+  (setq skip-start (skip-char line delim))
+  (setq delim-pos (position delim skip-start))
+  (cond
+    ((null delim-pos)
+      (setq num (parse-integer skip-start))
+      (list num))
+    (t
+      (setq num (parse-integer (subseq skip-start 0 delim-pos)))
+      (append (list num) (parse-nums (subseq skip-start (+ 1 delim-pos)) delim)))))
+
+(defun parse-boards (lines)
+  (cond
+    ((null lines) nil)
+    (t
+      (setq board (reduce 'append (loop :for n :from 0 :below 5 :collect (parse-nums (nth n lines) #\Space))))
+      (setq next (nthcdr 6 lines))
+      (append (list board) (parse-boards next)))))
+
+(defun get-input (filename)
+  (with-open-file (stream filename)
+    (loop for line = (read-line stream nil nil)
+      while line
+      collect line)))
+
+(setq lines (get-input "inputs/input4.txt"))
+(setq numbers (parse-nums (car lines) #\,))
+(setq boards (parse-boards (cddr lines)))
+
 ; convert raw boards to board-state indicators
 (setq board-states
   (map 'list
@@ -104,4 +139,6 @@
 
 ; part 1
 (final-score (bingo1 board-states numbers))
+
+; part 2
 (final-score (bingo2 board-states numbers))
