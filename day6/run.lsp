@@ -1,5 +1,7 @@
 #!/usr/bin/gcl -f
 
+(load "../common")
+
 (defun parse-nums (line)
   (let ((delim-pos (position #\, line)))
     (cond
@@ -14,11 +16,10 @@
           ; parse rest of numbers
           (parse-nums (subseq line (+ 1 delim-pos))))))))
 
-(defun get-input (filename)
-  (with-open-file (stream filename)
-    (parse-nums (read-line stream nil nil))))
+(setq input
+      (car (get-input
+        "input.txt" 'parse-nums (lambda (x) (> (length x) 0)))))
 
-(setq input (get-input "input.txt"))
 (setq fish-state (loop :for n :below 9 :collect 0))
 (loop :for n :below (length input)
   do (apply (lambda (x) (setf (nth x fish-state) (+ 1 (nth x fish-state)))) (list (nth n input))))

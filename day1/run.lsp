@@ -1,12 +1,10 @@
 #!/usr/bin/gcl -f
 
-(defun get-input (filename)
-  (with-open-file (stream filename)
-    (loop for line = (read-line stream nil nil)
-      while (and line (> (length line) 0))
-      collect (parse-integer line))))
+(load "../common")
 
-(setq input (get-input "input.txt"))
+(setq input
+  (get-input
+    "input.txt" 'parse-integer (lambda (x) (> (length x) 0))))
 
 ; Count the number of times a value increases from the last
 (defun count1 (xs)

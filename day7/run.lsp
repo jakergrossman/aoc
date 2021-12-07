@@ -1,21 +1,15 @@
 #!/usr/bin/gcl -f
 
-(defun parse-nums (line)
-  (setq delim-pos (position #\, line))
-  (cond
-    ((null delim-pos)
-      (setq num (parse-integer line))
-      (list num))
-    (t
-      (setq num (parse-integer (subseq line 0 delim-pos)))
-      (append (list num) (parse-nums (subseq line (+ 1 delim-pos)))))))
+(load "../common")
 
-(defun get-input (filename)
-  (with-open-file (stream filename)
-    (parse-nums (read-line stream nil nil))))
+(defun process-line (line)
+  (parse-integers line #\,))
 
-(setq input (get-input "input.txt"))
-(setf input (make-array (list (length input)) :initial-contents input))
+(setq input
+      (car (get-input
+        "input.txt" #'process-line (lambda (x) (> (length x) 0)))))
+
+(setf input-array (make-array (list (length input)) :initial-contents input))
 
 (defun fuel-cost1 (pos crabs)
   (reduce
@@ -37,17 +31,17 @@
     crabs
     :initial-value 0))
 
-(setq max-pos (reduce 'max input))
+(setq max-pos (reduce 'max input-array))
 
 (defun triangle-cost (distance)
   (* 0.5 (* (+ 1 distance) distance)))
 
 (setq fuel-costs1
   (map 'list
-    (lambda (x) (fuel-cost1 x input))
+    (lambda (x) (fuel-cost1 x input-array))
     (loop :for n :below max-pos :collect n)))
 
-(setq fuel-costs2 (loop :for n :below max-pos :collect (round (fuel-cost2 n input))))
+(setq fuel-costs2 (loop :for n :below max-pos :collect (round (fuel-cost2 n input-array))))
 
 (format t "Part 1: ~d~%" (reduce 'min fuel-costs1))
 

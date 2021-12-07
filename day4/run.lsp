@@ -1,38 +1,17 @@
 #!/usr/bin/gcl -f
 
-(defun skip-char (line c)
-  (cond
-    ((null line) "")
-    ((eq (char line 0) c) (skip-char (subseq line 1) c))
-    (t line)))
-
-(defun parse-nums (line delim)
-  (let* ((skip-start (skip-char line delim))
-        (delim-pos (position delim skip-start)))
-    (cond
-      ((null delim-pos)
-        (list (parse-integer skip-start)))
-      (t
-        (append
-          (list (parse-integer (subseq skip-start 0 delim-pos)))
-          (parse-nums (subseq skip-start (+ 1 delim-pos)) delim))))))
+(load "../common")
 
 (defun parse-boards (lines)
   (cond
     ((null lines) nil)
     (t
-      (let ((board (reduce 'append (loop :for n :from 0 :below 5 :collect (parse-nums (nth n lines) #\Space))))
+      (let ((board (reduce 'append (loop :for n :from 0 :below 5 :collect (parse-integers (nth n lines) #\Space))))
             (next (nthcdr 6 lines)))
         (append (list board) (parse-boards next))))))
 
-(defun get-input (filename)
-  (with-open-file (stream filename)
-    (loop for line = (read-line stream nil nil)
-      while line
-      collect line)))
-
 (setq lines (get-input "input.txt"))
-(setq numbers (parse-nums (car lines) #\,))
+(setq numbers (parse-integers (car lines) #\,))
 (setq boards (parse-boards (cddr lines)))
 
 ; convert raw boards to board-state indicators

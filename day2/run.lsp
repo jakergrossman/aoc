@@ -1,18 +1,16 @@
 #!/usr/bin/gcl -f
 
+(load "../common")
+
 (defun process-line (line)
   (let* ((space-pos (position #\Space line))
         (direction (subseq line 0 space-pos))
         (distance  (parse-integer (subseq line (+ 1 space-pos)))))
     (list direction distance)))
 
-(defun get-input (filename)
-  (with-open-file (stream filename)
-    (loop for line = (read-line stream nil nil)
-      while (and line (> (length line) 0))
-      collect (process-line line))))
-
-(setq input (get-input "input.txt"))
+(setq input
+  (get-input
+    "input.txt" 'process-line (lambda (x) (> (length x) 0))))
 
 (defun subpath1 (input depth distance)
   (cond

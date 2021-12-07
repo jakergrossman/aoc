@@ -1,5 +1,7 @@
 #!/usr/bin/gcl -f
 
+(load "../common")
+
 ; process an input line, returning ((x1 y1) (x2 y2))
 (defun process-line (line)
   (let* ((left-comma (position #\, line))
@@ -14,12 +16,6 @@
         (y2 (parse-integer (subseq line (+ 1 right-comma)))))
     (list (list x1 y1) (list x2 y2))))
 
-(defun get-input (filename)
-  (with-open-file (stream filename)
-    (loop for line = (read-line stream nil nil)
-      while (and line (> (length line) 0))
-      collect (process-line line))))
-
 ; check if a movement is in a straight line
 (defun is-straight (entry)
   (not
@@ -29,7 +25,9 @@
       (not (eq (cadar entry) (cadadr entry))))))
 
 ; only straight lines
-(setq input2 (get-input "input.txt"))
+(setq input2
+      (get-input
+        "input.txt" 'process-line (lambda (x) (> (length x) 0))))
 (setq input1 (remove-if-not #'is-straight input2))
 (setq state1 (make-array '(1000000) :initial-element 0))
 

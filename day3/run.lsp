@@ -1,12 +1,10 @@
 #!/usr/bin/gcl -f
 
-(defun get-input (filename)
-  (with-open-file (stream filename)
-    (loop for line = (read-line stream nil nil)
-      while (and line (> (length line) 0))
-      collect line)))
+(load "../common")
 
-(setq input (get-input "input.txt"))
+(setq input
+  (get-input
+    "input.txt" nil (lambda (x) (> (length x) 0))))
 
 ; count the number of zeros and ones in a specified column
 (defun get-freq (xs col zeros ones)
