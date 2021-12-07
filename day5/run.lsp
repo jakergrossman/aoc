@@ -2,18 +2,17 @@
 
 ; process an input line, returning ((x1 y1) (x2 y2))
 (defun process-line (line)
-  (setq left-comma (position #\, line))
-  (setq left-space (position #\Space line))
-  (setq right-comma (position #\, line :from-end T))
-  (setq right-space (position #\Space line :from-end T))
+  (let* ((left-comma (position #\, line))
+        (left-space (position #\Space line))
+        (right-comma (position #\, line :from-end T))
+        (right-space (position #\Space line :from-end T))
 
-  (setq x1 (subseq line 0 left-comma))
-  (setq y1 (subseq line (+ 1 left-comma) left-space))
+        (x1 (parse-integer (subseq line 0 left-comma)))
+        (y1 (parse-integer (subseq line (+ 1 left-comma) left-space)))
 
-  (setq x2 (subseq line (+ 1 right-space) right-comma))
-  (setq y2 (subseq line (+ 1 right-comma)))
-
-  (list (list (parse-integer x1) (parse-integer y1)) (list (parse-integer x2) (parse-integer y2))))
+        (x2 (parse-integer (subseq line (+ 1 right-space) right-comma)))
+        (y2 (parse-integer (subseq line (+ 1 right-comma)))))
+    (list (list x1 y1) (list x2 y2))))
 
 (defun get-input (filename)
   (with-open-file (stream filename)
@@ -38,29 +37,27 @@
 (setq state2 (make-array '(1000000) :initial-element 0))
 
 (defun draw2 (delta-x delta-y pos-x pos-y state)
-  (setq pos (+ (* pos-x 1000) pos-y))
-  (setq current-value (aref state pos))
-  (setf (aref state pos) (+ 1 current-value))
-  (cond
-    ((and (eq 0 delta-x) (eq 0 delta-y)) state)
-    (t
-      (setq step-x (signum delta-x))
-      (setq step-y (signum delta-y))
-
-      (draw2 (- delta-x step-x) (- delta-y step-y) (+ pos-x step-x) (+ pos-y step-y) state))))
+  (let* ((pos (+ (* pos-x 1000) pos-y))
+        (current-value (aref state pos))
+        (step-x (signum delta-x))
+        (step-y (signum delta-y)))
+    (setf (aref state pos) (+ 1 current-value))
+    (cond
+      ((and (eq 0 delta-x) (eq 0 delta-y)) state) ; done
+      (t (draw2 (- delta-x step-x) (- delta-y step-y) (+ pos-x step-x) (+ pos-y step-y) state)))))
 
 (defun run-input (input state)
   (loop :for n :below (length input)
     do
-    (setq movement (nth n input))
-    (setq x1 (caar movement))
-    (setq y1 (cadar movement))
-    (setq x2 (caadr movement))
-    (setq y2 (cadadr movement))
+    (let* ((movement (nth n input))
+          (x1 (caar movement))
+          (y1 (cadar movement))
+          (x2 (caadr movement))
+          (y2 (cadadr movement))
 
-    (setq delta-x (- x2 x1))
-    (setq delta-y (- y2 y1))
-    (draw2 delta-x delta-y x1 y1 state))
+          (delta-x (- x2 x1))
+          (delta-y (- y2 y1)))
+      (draw2 delta-x delta-y x1 y1 state)))
   (return-from run-input state))
 
 (defun count-values (xs)

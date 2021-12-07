@@ -1,12 +1,10 @@
 #!/usr/bin/gcl -f
 
 (defun process-line (line)
-  (setq space-pos (position #\Space line))
-
-  (setq direction (subseq line 0 space-pos))
-  (setq distance  (parse-integer (subseq line (+ 1 space-pos))))
-
-  (list direction distance))
+  (let* ((space-pos (position #\Space line))
+        (direction (subseq line 0 space-pos))
+        (distance  (parse-integer (subseq line (+ 1 space-pos)))))
+    (list direction distance)))
 
 (defun get-input (filename)
   (with-open-file (stream filename)
@@ -19,7 +17,7 @@
 (defun subpath1 (input depth distance)
   (cond
     ((null input) (list depth distance))
-    (t (setq nextmove (car input))
+    (t (let ((nextmove (car input)))
       (cond
         ((string= (car nextmove) "forward")
           (subpath1 (cdr input) depth (+ distance (cadr nextmove))))
@@ -28,13 +26,12 @@
           (subpath1 (cdr input) (- depth (cadr nextmove)) distance))
 
         ((string= (car nextmove) "down")
-          (subpath1 (cdr input) (+ depth (cadr nextmove)) distance))))))
+          (subpath1 (cdr input) (+ depth (cadr nextmove)) distance)))))))
 
 (defun subpath2 (input depth distance aim)
   (cond
     ((null input) (list depth distance aim))
-    (t
-      (setq nextmove (car input))
+    (t (let ((nextmove (car input)))
       (cond
         ((string= (car nextmove) "forward")
           (subpath2 (cdr input) (+ depth (* aim (cadr nextmove))) (+ distance (cadr nextmove)) aim))
@@ -43,7 +40,7 @@
           (subpath2 (cdr input) depth distance (- aim (cadr nextmove))))
 
         ((string= (car nextmove) "down")
-          (subpath2 (cdr input) depth distance (+ aim (cadr nextmove))))))))
+          (subpath2 (cdr input) depth distance (+ aim (cadr nextmove)))))))))
 
 (compile 'subpath1)
 (compile 'subpath2)

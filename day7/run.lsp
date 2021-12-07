@@ -33,7 +33,7 @@
     (lambda (x y)
       (setq displacement (- pos y))
       (setq distance (* (signum displacement) displacement))
-      (+ x (cost distance)))
+      (+ x (triangle-cost distance)))
     crabs
     :initial-value 0))
 

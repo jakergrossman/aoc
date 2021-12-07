@@ -49,29 +49,30 @@
 
 (setq epsilon-dec (bin-to-dec epsilon-bin))
 
+(defun pick-filter (rating-type freq)
+  (cond
+    ((eq rating-type 'oxygen)
+      ; oxygen rating filter is greater of 1 & 0
+      (cond
+        ((> (car freq) (cadr freq)) #\0)
+        (t #\1)))
+
+    ((eq rating-type 'co2)
+      ; co2 rating filter is lesser of 1 & 0
+      (cond
+        ((> (car freq) (cadr freq)) #\1)
+        (t #\0)))))
+
+
 ; find either the oxygen or co2 rating
 (defun find-rating (rating-type xs pos)
   (cond
     ((null xs) '())
     ((eq 1 (length xs)) (car xs))
     (t
-      (setq freq (get-freq xs pos 0 0))
-
-      (setq filter
-        (cond
-          ((eq rating-type 'oxygen)
-            ; oxygen rating filter is greater of 1 & 0
-            (cond
-              ((> (car freq) (cadr freq)) #\0)
-              (t #\1)))
-
-          ((eq rating-type 'co2)
-            ; co2 rating filter is lesser of 1 & 0
-            (cond
-              ((> (car freq) (cadr freq)) #\1)
-              (t #\0)))))
-
-      (find-rating rating-type (remove-if-not (lambda (x) (eq filter (char x pos))) xs) (+ pos 1)))))
+      (let* ((freq (get-freq xs pos 0 0))
+            (filter (pick-filter rating-type freq)))
+        (find-rating rating-type (remove-if-not (lambda (x) (eq filter (char x pos))) xs) (+ pos 1))))))
 
 (setq oxygen-rating (parse-integer (find-rating 'oxygen input 0) :radix 2))
 (setq co2-rating (parse-integer (find-rating 'co2 input 0) :radix 2))
