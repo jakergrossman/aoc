@@ -15,6 +15,7 @@
     (parse-nums (read-line stream nil nil))))
 
 (setq input (get-input "input.txt"))
+(setf input (make-array (list (length input)) :initial-contents input))
 
 (defun fuel-cost1 (pos crabs)
   (reduce
@@ -36,24 +37,17 @@
     crabs
     :initial-value 0))
 
-(setq max-pos
-  (reduce
-    (lambda (x y)
-      (cond
-        ((> y x) y)
-        (t x)))
-    input
-    :initial-value 0))
+(setq max-pos (reduce 'max input))
 
-(defun cost (distance)
-  (round (* 0.5 (* (+ 1 distance) distance))))
+(defun triangle-cost (distance)
+  (* 0.5 (* (+ 1 distance) distance)))
 
 (setq fuel-costs1
   (map 'list
     (lambda (x) (fuel-cost1 x input))
     (loop :for n :below max-pos :collect n)))
 
-(setq fuel-costs2 (loop :for n :below max-pos :collect (fuel-cost2 n input)))
+(setq fuel-costs2 (loop :for n :below max-pos :collect (round (fuel-cost2 n input))))
 
 (format t "Part 1: ~d~%" (reduce 'min fuel-costs1))
 
