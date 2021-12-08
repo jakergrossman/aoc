@@ -30,3 +30,11 @@
         (append
           (list (parse-integer (subseq skip-start 0 delim-pos)))
           (parse-integers (subseq skip-start (+ 1 delim-pos)) delim))))))
+
+; parse space separated words from a string
+(defun parse-words (str)
+  (let* ((skipped (skip-char str #\Space))
+         (next-space (position #\Space skipped)))
+    (cond
+      ((null next-space) (list skipped))
+      (t (append (list (subseq skipped 0 next-space)) (parse-words (subseq skipped next-space)))))))
