@@ -10,36 +10,46 @@
   (get-input
     "input.txt" 'process-line (lambda (x) (> (length x) 0))))
 
-(defun subpath1 (input depth distance)
-  (cond
-    ((null input) (list depth distance))
-    (t (let ((nextmove (car input)))
-      (cond
-        ((string= (car nextmove) "forward")
-          (subpath1 (cdr input) depth (+ distance (cadr nextmove))))
 
-        ((string= (car nextmove) "up")
-          (subpath1 (cdr input) (- depth (cadr nextmove)) distance))
+(defun subpath1 (input)
+  (reduce
+    (lambda (x y)
+      (let ((depth (car x))
+            (distance (cadr x))
+            (action (car y))
+            (value (cadr y)))
+        (cond
+          ((string= action "forward")
+            (list depth (+ distance value)))
 
-        ((string= (car nextmove) "down")
-          (subpath1 (cdr input) (+ depth (cadr nextmove)) distance)))))))
+          ((string= action "up")
+            (list (- depth value) distance))
 
-(defun subpath2 (input depth distance aim)
-  (cond
-    ((null input) (list depth distance aim))
-    (t (let ((nextmove (car input)))
-      (cond
-        ((string= (car nextmove) "forward")
-          (subpath2 (cdr input) (+ depth (* aim (cadr nextmove))) (+ distance (cadr nextmove)) aim))
+          ((string= action "down")
+            (list (+ depth value) distance)))))
+    input
+    :initial-value (list 0 0)))
 
-        ((string= (car nextmove) "up")
-          (subpath2 (cdr input) depth distance (- aim (cadr nextmove))))
+(defun subpath2 (input)
+  (reduce
+    (lambda (x y)
+      (let ((depth (car x))
+            (distance (cadr x))
+            (aim (caddr x))
+            (action (car y))
+            (value (cadr y)))
+        (cond
+          ((string= action "forward")
+            (list (+ depth (* aim value)) (+ distance value) aim))
 
-        ((string= (car nextmove) "down")
-          (subpath2 (cdr input) depth distance (+ aim (cadr nextmove)))))))))
+          ((string= action "up")
+            (list depth distance (- aim value)))
 
-(compile 'subpath1)
-(compile 'subpath2)
+          ((string= action "down")
+            (list depth distance (+ aim value))))))
+    input
+    :initial-value (list 0 0 0)))
 
-(format t "Part 1: ~d~%" (* (car (subpath1 input 0 0)) (cadr (subpath1 input 0 0))))
-(format t "Part 2: ~d~%" (* (car (subpath2 input 0 0 0)) (cadr (subpath2 input 0 0 0))))
+
+(format t "Part 1: ~d~%" (* (car (subpath1 input)) (cadr (subpath1 input))))
+(format t "Part 2: ~d~%" (* (car (subpath2 input)) (cadr (subpath2 input))))
