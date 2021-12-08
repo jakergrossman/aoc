@@ -3,10 +3,8 @@
 (load "../common")
 
 (defun process-line (line)
-  (let* ((space-pos (position #\Space line))
-        (direction (subseq line 0 space-pos))
-        (distance  (parse-integer (subseq line (+ 1 space-pos)))))
-    (list direction distance)))
+  (let* ((words (parse-words line)))
+    (list (car words) (parse-integer (cadr words)))))
 
 (setq input
   (get-input

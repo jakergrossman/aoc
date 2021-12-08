@@ -2,6 +2,7 @@
 
 (load "../common")
 
+; split into ((signal-patterns) (output))
 (defun process-line (line)
   (let ((words (parse-words line)))
     (list (butlast words 5) (nthcdr 11 words))))
@@ -19,14 +20,17 @@
       ((eq 7 len) T) ; 8
       (t nil))))
 
+; count # of words with 2, 3, 4, or 7 characters
 (defun get-unique (words) (length (remove-if-not #'unique words)))
 
+; check thay every character of key1 is in key2
 (defun is-in (key1 key2)
   (cond
     ((string= "" key1) t)
     ((null (position (char key1 0) key2)) nil)
     (t (is-in (subseq key1 1) key2))))
 
+; count how many letters are in key1 that are also in key2
 (defun shared (key1 key2)
   (cond
     ((string= "" key1) 0)
@@ -35,7 +39,7 @@
     (t
       (+ 1 (shared (subseq key1 1) key2)))))
 
-; defun create-decode table
+; incrementally calculate decode table
 (defun create-decode (keys)
   (let* ((sorted (map 'list (lambda (x) (sort x #'string<=)) keys))
         (segment1 (find-if (lambda (x) (eq 2 (length x))) sorted))
@@ -45,44 +49,46 @@
         (segment9 (find-if (lambda (x) (and (eq 6 (length x)) (is-in segment4 x))) sorted))
         (segment3 (find-if (lambda (x) (and (eq 5 (length x)) (is-in segment1 x))) sorted))
         (segment0 (find-if
-          (lambda (x)
-            (and
-              (eq 6 (length x))
-              (and
-                (not (eq x segment9))
-                (eq (shared x segment1) 2))))
-          sorted))
+                    (lambda (x)
+                      (and
+                        (eq 6 (length x))
+                        (and (not (eq x segment9)) (eq (shared x segment1) 2))))
+                    sorted))
         (segment6 (find-if
-          (lambda (x)
-            (and
-              (eq 6 (length x))
-              (and
-                (not (eq x segment9))
-                (not (eq x segment0)))))
-          sorted))
+                    (lambda (x)
+                      (and
+                        (eq 6 (length x))
+                        (and (not (eq x segment9)) (not (eq x segment0)))))
+                    sorted))
         (segment5 (find-if (lambda (x) (and (eq 5 (length x)) (is-in x segment6))) sorted))
-        (segment2
-          (find-if (lambda (x)
-            (and
-              (eq 5 (length x))
-              (and
-                (not (eq x segment5))
-                (not (eq x segment3)))))
-            sorted))
-      (table-entries (list
-        (list segment0 0) (list segment1 1) (list segment2 2) (list segment3 3)
-        (list segment4 4) (list segment5 5) (list segment6 6) (list segment7 7)
-        (list segment8 8) (list segment9 9))))
-    (list 'lambda
-          (list 'key)
-          (cons 'cond (map 'list (lambda (x) (list #'print x) (cons (list 'string= (list 'sort 'key #'string<=) (list 'quote (car x))) (list (cadr x)))) table-entries)))))
+        (segment2 (find-if
+                    (lambda (x)
+                      (and
+                        (eq 5 (length x))
+                        (and (not (eq x segment5)) (not (eq x segment3)))))
+                    sorted))
+        (table-entries (list
+          (list segment0 0) (list segment1 1) (list segment2 2) (list segment3 3)
+          (list segment4 4) (list segment5 5) (list segment6 6) (list segment7 7)
+          (list segment8 8) (list segment9 9)))) ; end let declarations
 
+      ; create decode lambda
+      (list 'lambda
+        (list 'key)
+        (cons 'cond
+          (map 'list
+            (lambda (x)
+              (cons (list 'string= (list 'sort 'key #'string<=) (list 'quote (car x))) (list (cadr x))))
+            table-entries)))))
+
+; generate decode table for each line and apply it over the output
 (setq decoded-digits
   (map 'list (lambda (x)
     (let ((decode (create-decode (car x))))
       (map 'list (lambda (y) (apply decode (list y))) (cadr x))))
   input))
 
+; convert digit lists to base10 integers
 (setq decoded (map 'list (lambda (z) (reduce (lambda (x y) (+ (* 10 x) y)) z)) decoded-digits))
 
 (format t "Part 1: ~d~%" (reduce '+ (map 'list (lambda (x) (get-unique (cadr x))) input)))
