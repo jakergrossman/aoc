@@ -13,10 +13,10 @@
 ; skip the beginning of str that matches
 ; the character c
 (defun skip-char (str c)
-  (cond
-    ((null str) "")
-    ((eq (char str 0) c) (skip-char (subseq str 1) c))
-    (t str)))
+  (let ((non-c-pos (position-if-not (lambda (x) (eq x c)) str)))
+    (cond
+      ((null non-c-pos) str)
+      (t (subseq str non-c-pos)))))
 
 ; parse delimiter-separated integers
 ; from a string
