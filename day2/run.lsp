@@ -50,6 +50,8 @@
     input
     :initial-value (list 0 0 0)))
 
+(setq part1 (subpath1 input))
+(setq part2 (subpath2 input))
 
-(format t "Part 1: ~d~%" (* (car (subpath1 input)) (cadr (subpath1 input))))
-(format t "Part 2: ~d~%" (* (car (subpath2 input)) (cadr (subpath2 input))))
+(format t "Part 1: ~d~%" (* (car part1) (cadr part1)))
+(format t "Part 2: ~d~%" (* (car part2) (cadr part2)))
