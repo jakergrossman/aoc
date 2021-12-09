@@ -1,6 +1,13 @@
 #!/bin/sh
 
 DAYS=$(find . -type d -name 'day*' -printf '%P\n' | sort)
+TIME=$(which time)
+GCL=$(which gcl)
+
+if [ -z "$GCL" ]; then
+    >&2 echo '[ERROR] No GCL installation found'
+    exit 1
+fi
 
 if [ "$#" -eq 0 ]; then
     >&2 echo '[ERROR] No day selected!'
@@ -12,7 +19,12 @@ fi
 run_day () {
     echo "--- $1 ---"
     cd "$1"
-    $(which time) -f "Time: %E" "./run.lsp" 2>&1 | tail -n 3
+
+    if [ ! -z "$TIME" ]; then
+        "$TIME" -f "Time: %E" "$GCL" -f run.lsp 2>&1 | tail -n 3
+    else
+        "$GCL" -f run.lsp 2>&1 | tail -n 2
+    fi
     cd ..
     echo
 }

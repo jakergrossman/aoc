@@ -1,4 +1,4 @@
-#!/usr/bin/gcl -f
+; Day 1: Sonar Sweep
 
 (load "../common")
 

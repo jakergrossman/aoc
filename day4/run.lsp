@@ -1,4 +1,4 @@
-#!/usr/bin/gcl -f
+; Day 4: Giant Squid
 
 (load "../common")
 

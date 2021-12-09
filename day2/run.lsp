@@ -1,4 +1,4 @@
-#!/usr/bin/gcl -f
+; Day 2: Dive!
 
 (load "../common")
 

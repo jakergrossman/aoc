@@ -1,4 +1,4 @@
-#!/usr/bin/gcl -f
+; Day 6: Lanternfish
 
 (load "../common")
 

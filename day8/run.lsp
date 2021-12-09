@@ -1,4 +1,4 @@
-#!/usr/bin/gcl -f
+; Day 8: Seven Segment Search
 
 (load "../common")
 

@@ -1,4 +1,4 @@
-#!/usr/bin/gcl -f
+; Day 7: The Treachery of Whales
 
 (load "../common")
 

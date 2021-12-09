@@ -1,4 +1,4 @@
-#!/usr/bin/gcl -f
+; Day 3: Binary Diagnostic
 
 (load "../common")
 

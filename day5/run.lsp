@@ -1,4 +1,4 @@
-#!/usr/bin/gcl -f
+; Day 5: Hydrothermal Venture
 
 (load "../common")
 
