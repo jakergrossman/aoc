@@ -22,61 +22,23 @@
     boards))
 
 ; update every board with the next number
-(defun call-number (x states)
+(defun call-number (num states)
   (map 'list
-    (lambda (state)
-      (map 'list
-        (lambda (entry)
-          (cond
-            ((eq x (car entry)) (list (car entry) 1))
-            (t entry)))
-        state))
+    (lambda (x)
+      (substitute-if (list num 1) (lambda (y) (eq y num)) x :key #'car :count 1))
     states))
 
 ; collect specific indices of the board
-(defun collect-positions (state result positions)
-  (cond
-    ((null positions) result)
-    (t
-      (collect-positions state
-        (append result (list (nth (car positions) state)))
-        (cdr positions)))))
+; test that all specified positions are marked
+(defun test-positions (state positions)
+  (notany #'null (map 'list (lambda (x) (eq (cadr (nth x state)) 1)) positions)))
 
 (defun check-board-state (state)
-  (cond
-    ((check-rows state) T)
-    ((check-cols state) T)
-    (t NIL)))
-
-(defun check-cols (state)
-  (let
-    ((cols (map 'list
-      (lambda (x)
-        (collect-positions state '() (loop :for n :from 0 :to 4 :collect (+ (* 5 n) x))))
-      (loop :for n :from 0 :to 4 :collect n))))
-    (cond
-      ; for each col
-      ((eq 5 (reduce '+ (map 'list 'cadr (nth 0 cols)))) T)
-      ((eq 5 (reduce '+ (map 'list 'cadr (nth 1 cols)))) T)
-      ((eq 5 (reduce '+ (map 'list 'cadr (nth 2 cols)))) T)
-      ((eq 5 (reduce '+ (map 'list 'cadr (nth 3 cols)))) T)
-      ((eq 5 (reduce '+ (map 'list 'cadr (nth 4 cols)))) T)
-      (t NIL))))
-
-(defun check-rows (state)
-  (let
-    ((rows (map 'list
-      (lambda (x)
-        (collect-positions state '() (loop :for n :from 0 :to 4 :collect (+ (* 5 x) n))))
-      (loop :for n :from 0 :to 4 :collect n))))
-    (cond
-      ; for each row
-      ((eq 5 (reduce '+ (map 'list 'cadr (nth 0 rows)))) T)
-      ((eq 5 (reduce '+ (map 'list 'cadr (nth 1 rows)))) T)
-      ((eq 5 (reduce '+ (map 'list 'cadr (nth 2 rows)))) T)
-      ((eq 5 (reduce '+ (map 'list 'cadr (nth 3 rows)))) T)
-      ((eq 5 (reduce '+ (map 'list 'cadr (nth 4 rows)))) T)
-      (t NIL))))
+  (let ((cols (loop :for n :below 5 :collect
+          (test-positions state (loop :for m :below 5 :collect (+ (* 5 m) n)))))
+        (rows (loop :for n :below 5 :collect
+          (test-positions state (loop :for m :below 5 :collect (+ (* 5 n) m))))))
+    (notevery #'null (append cols rows))))
 
 ; find first winning board
 (defun bingo1 (states ns)
@@ -84,9 +46,9 @@
         (new-states (call-number next-num states)))
     (loop :for x :below (length new-states)
       do
-        (setq state (nth x new-states))
-        (cond
-          ((check-board-state state) (return-from bingo1 (list next-num state)))))
+        (let ((state (nth x new-states)))
+          (cond
+            ((check-board-state state) (return-from bingo1 (list next-num state))))))
 
     (bingo1 new-states (cdr ns))))
 
@@ -104,15 +66,16 @@
 
 ; given the winning number and board, calculate the final score
 (defun final-score (result)
-  (let
-    ((unset-values (map 'list
-      (lambda (x)
+  (*
+    (car result)
+    (reduce
+      (lambda (x y)
         (cond
-          ((eq (cadr x) 0) (car x))
-          (t 0)))
-      (cadr result))))
-
-    (* (car result) (apply '+ unset-values))))
+          ((null y) x)
+          ((eq (cadr y) 0) (+ x (car y)))
+          (t x)))
+      (cadr result)
+      :initial-value 0)))
 
 (format t "Part 1: ~d~%" (final-score (bingo1 board-states numbers)))
 
