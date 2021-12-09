@@ -1,14 +1,21 @@
-; read in all lines of a file, optionally
-; processing each line as it is read with process-line
-(defun get-input (filename &optional process predicate)
+; read in lines of a file
+;
+; predicate - function to apply to decide whether to omit a line
+; keep - boolean that inverts the behavior of `predicate` (only accept lines which satisfy `predicate`)
+; process - function to apply to each accepted line
+(defun get-input (filename &key predicate keep process)
   (with-open-file (stream filename)
     (loop for line = (read-line stream nil nil)
-      while (cond
-              ((null predicate) line)
-              (t (and line (funcall predicate line))))
-      collect (cond
-                ((null process) line)
-                (t (funcall process line))))))
+      while line
+      unless
+        (cond
+          ((null predicate) nil) ; no predicate, always keep
+          ((null keep) (funcall predicate line)) ; predicate, throw away matches
+          (t (not (funcall predicate line)))) ; predicate, keep matches
+      collect
+      (cond
+        ((null process) line)
+        (t (funcall process line))))))
 
 ; skip the beginning of str that matches
 ; the character c
@@ -38,3 +45,7 @@
     (cond
       ((null next-space) (list skipped))
       (t (append (list (subseq skipped 0 next-space)) (parse-words (subseq skipped next-space)))))))
+
+; test whether a string is the empty string
+(defun string-empty-p (str)
+  (string= "" str))

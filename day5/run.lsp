@@ -26,8 +26,9 @@
 
 ; only straight lines
 (setq input2
-      (get-input
-        "input.txt" 'process-line (lambda (x) (> (length x) 0))))
+  (get-input
+    "input.txt" :process #'process-line :predicate #'string-empty-p))
+
 (setq input1 (remove-if-not #'is-straight input2))
 (setq state1 (make-array '(1000000) :initial-element 0))
 

@@ -4,7 +4,7 @@
 
 (setq input
   (get-input
-    "input.txt" nil (lambda (x) (> (length x) 0))))
+    "input.txt" :predicate #'string-empty-p))
 
 ; count the number of zeros and ones in a specified column
 (defun get-freq (xs col zeros ones)

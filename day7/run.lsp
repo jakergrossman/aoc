@@ -6,8 +6,8 @@
   (parse-integers line #\,))
 
 (setq input
-      (car (get-input
-        "input.txt" #'process-line (lambda (x) (> (length x) 0)))))
+  (car (get-input
+    "input.txt" :process #'process-line :predicate #'string-empty-p)))
 
 (setf input-array (make-array (list (length input)) :initial-contents input))
 

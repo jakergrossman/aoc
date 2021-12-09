@@ -2,23 +2,11 @@
 
 (load "../common")
 
-(defun parse-nums (line)
-  (let ((delim-pos (position #\, line)))
-    (cond
-      ; last number
-      ((null delim-pos)
-        (list (parse-integer line)))
-      (t
-        (append
-          ; next number
-          (list (parse-integer (subseq line 0 delim-pos)))
-
-          ; parse rest of numbers
-          (parse-nums (subseq line (+ 1 delim-pos))))))))
+(defun process-line (line)
+  (parse-integers line #\,))
 
 (setq input
-      (car (get-input
-        "input.txt" 'parse-nums (lambda (x) (> (length x) 0)))))
+  (car (get-input "input.txt" :process #'process-line :predicate #'string-empty-p)))
 
 (setq fish-state (loop :for n :below 9 :collect 0))
 (loop :for n :below (length input)

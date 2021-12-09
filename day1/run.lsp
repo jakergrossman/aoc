@@ -4,7 +4,7 @@
 
 (setq input
   (get-input
-    "input.txt" 'parse-integer (lambda (x) (> (length x) 0))))
+    "input.txt" :process #'parse-integer :predicate #'string-empty-p))
 
 ; Count the number of times a value increases from the last
 (defun count1 (xs)

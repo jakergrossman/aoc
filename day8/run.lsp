@@ -9,7 +9,7 @@
 
 (setq input
   (get-input
-    "input.txt" #'process-line (lambda (x) (> (length x) 0))))
+    "input.txt" :process #'process-line :predicate #'string-empty-p))
 
 (defun unique (x)
   (let ((len (length x)))
