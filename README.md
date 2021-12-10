@@ -5,13 +5,22 @@ Solutions to [Advent of Code 2021](https://adventofcode.com/2021) in LISP.
 [GNU Common LISP](https://www.gnu.org/software/gcl/)
 
 ## Running
+```
+Usage: ./run.sh [-i <interpreter>] [-e <run-command>] <day-specifier> ...
+  -h      Show help (this message)
+  -i      Which interpreter to use (one of "clisp" or "gcl", defaults to "gcl")
+  -e      Executable command to run each file with. Overrides -i.
+  -t      Only display runtimes, not answers
+  -a      Only display answers, not runtimes
+```
+
 To run and print outputs, invoke `run.sh` with one or more days, specified as `dayx` or just `x`.
 Alternatively, use `all` to run all days:
 
+### Examples
+
 ```console
-$ ./run.sh 1
-$ ./run.sh day2
-$ ./run.sh 1 day2 3
-$ ./run.sh 01 day2 03 day04
-$ ./run.sh all
+$ ./run.sh 1                 # run day one with default options
+$ ./run.sh -i clisp day2     # run day 2 with the CLISP interpreter
+$ ./run.sh -t day1 day02 03  # run days 1, 2, and 3, printing only times
 ```

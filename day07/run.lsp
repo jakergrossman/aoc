@@ -3,7 +3,7 @@
 ; dynamic programming solution by u/Zyppie on reddit:
 ; https://www.reddit.com/r/adventofcode/comments/rar7ty/comment/hnmiagb/?utm_source=share&utm_medium=web2x&context=3
 
-(load "../common")
+(load "../common.lsp")
 
 (defun process-line (line)
   (parse-integers line #\,))

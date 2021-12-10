@@ -1,6 +1,6 @@
 ; Day 1: Sonar Sweep
 
-(load "../common")
+(load "../common.lsp")
 
 (setq input
   (get-input

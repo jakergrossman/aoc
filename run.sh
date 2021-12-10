@@ -1,21 +1,37 @@
 #!/bin/sh
 
-usage () { echo "Usage: $0 [-g <gcl path>] <day-specifier> ..."; }
+set -e
+
+usage () { echo "Usage: $0 [-i <interpreter>] [-e <run-command>] <day-specifier> ..."; }
 error () { >&2 echo "[ERROR] $1"; }
 help () {
     usage
-    echo '  -g      Path to GCL executable'
     echo '  -h      Show help (this message)'
+    echo '  -i      Which interpreter to use (one of "clisp" or "gcl", defualts to "gcl")'
+    echo '  -e      Executable command to run each file with. Overrides -i.'
+    echo '  -t      Only display runtimes, not answers'
+    echo '  -a      Only display answers, not runtimes'
     exit 0
 }
 
-while getopts ":hg:" o; do
+INTERP="gcl"
+
+while getopts "hi:e:ta" o; do
     case "${o}" in
-        g)
-            GCL=${OPTARG}
+        i)
+            INTERP=${OPTARG}
+            ;;
+        e)
+            EXEC=${OPTARG}
             ;;
         h)
             help
+            ;;
+        t)
+            TIME_ONLY="true"
+            ;;
+        a)
+            ANSWERS_ONLY="true"
             ;;
         *)
             usage
@@ -25,15 +41,34 @@ while getopts ":hg:" o; do
 done
 shift $((OPTIND-1))
 
+if [ ! -z $TIME_ONLY ] && [ ! -z $ANSWERS_ONLY ]; then
+    error "Cannot use both -t (time only) and -a (answers only)"
+    error "$(usage)"
+    exit 1
+fi
+
 DAYS=$(find . -type d -name 'day*' | sed 's/^\.\///' | sort --version-sort)
 TIME=$(which time)
 
-if [ -z "$GCL" ]; then
-    # try to find GCL
-    GCL=$(which gcl)
-    if [ -z "$GCL" ]; then
+if [ -z "$EXEC" ]; then
+    # try to find executable
+    case $INTERP in
+        clisp)
+            EXEC=$(which clisp)
+            ;;
+        gcl | GCL)
+            EXEC="$(which gcl)"
+            if [ ! -z EXEC ]; then EXEC="$EXEC -f"; fi
+            ;;
+        *)
+            error "Invalid interpreter '$INTERP'"
+            error "$(usage)"
+            exit 1
+            ;;
+    esac
+    if [ -z "$EXEC" ]; then
         # GCL not found
-        error 'No GCL installation specified and no installation could be found'
+        error "No '$INTERP' installation specified and no installation could be found"
         error "$(usage)"
         exit 1
     fi
@@ -53,12 +88,28 @@ run_day () {
     echo "--- $1 ---"
     cd "$1"
 
+    # echo $EXEC
+
     if [ ! -z "$TIME" ]; then
-        OUTPUT=$("$TIME" -p "$GCL" -f run.lsp 2>&1 | tail -n 5)
-        echo "$OUTPUT" | head -n 2 # output answers
-        echo "Time: $(echo "$OUTPUT" | tail -n 4 | grep ^real | awk '{ print $2 }')s"
+        # save runtime & answer
+        OUTPUT=$("$TIME" -p $EXEC run.lsp 2>&1 | tail -n 5)
+
+        # output answers
+        if [ -z $TIME_ONLY ]; then
+            echo "$OUTPUT" | head -n 2
+        fi
+
+        # output time
+        if [ -z $ANSWERS_ONLY ]; then
+            echo "Time: $(echo "$OUTPUT" | tail -n 4 | grep ^real | awk '{ print $2 }')s"
+        fi
     else
-        "$GCL" -f run.lsp 2>&1 | tail -n 2
+        if [ ! -z $TIME_ONLY ]; then
+            error "-t was specified by could not find a 'time' executable"
+            error "$(usage)"
+            exit 1
+        fi
+        $EXEC run.lsp 2>&1 | tail -n 2
     fi
     cd ..
     echo

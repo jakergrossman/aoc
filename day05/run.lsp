@@ -1,6 +1,6 @@
 ; Day 5: Hydrothermal Venture
 
-(load "../common")
+(load "../common.lsp")
 
 ; process an input line, returning ((x1 y1) (x2 y2))
 (defun process-line (line)

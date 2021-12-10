@@ -1,6 +1,6 @@
 ; Day 3: Binary Diagnostic
 
-(load "../common")
+(load "../common.lsp")
 
 (setq input
   (get-input
