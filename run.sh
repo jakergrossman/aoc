@@ -123,13 +123,19 @@ if [ "$1" = "all" ]; then
     exit 0
 else
     for arg in $@; do
-        if echo "$DAYS" | grep -q "day0$arg"; then
-            run_day "day0$arg"
-        elif echo "$DAYS" | grep -q "day$arg"; then
-            run_day "day$arg"
-        elif echo "$DAYS" | grep -q "$arg"; then
-            run_day "$arg"
-        else
+        case $arg in
+            ''|*[!0-9]*)
+                # long form, i.e. day01 day02 day03
+                EFFECTIVE_DAY="$arg"
+                ;;
+            *)
+                # short form, i.e 1, 02, 3
+                EFFECTIVE_DAY="day$(printf "%02d" $arg)"
+                ;;
+        esac
+
+
+        if ! echo "$DAYS" | grep -q "$EFFECTIVE_DAY"; then
             error "$(usage)"
             error "Invalid day selected ($arg)!"
             error 'Completed days:'
@@ -138,5 +144,7 @@ else
             done
             exit 1
         fi
+
+        run_day "$EFFECTIVE_DAY"
     done
 fi
