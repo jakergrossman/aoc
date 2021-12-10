@@ -73,23 +73,22 @@
           (list segment8 8) (list segment9 9)))) ; end let declarations
 
       ; create decode lambda
-      (list 'lambda
-        (list 'key)
-        (cons 'cond
-          (map 'list
-            (lambda (x)
-              (cons (list 'string= (list 'sort 'key #'string<=) (list 'quote (car x))) (list (cadr x))))
-            table-entries)))))
+      (let ((hash (make-hash-table :test #'equal)))
+        (loop :for entry :in table-entries :do (setf (gethash (car entry) hash) (cadr entry)))
+        hash)))
 
-; generate decode table for each line and apply it over the output
-(setq decoded-digits
-  (map 'list (lambda (x)
-    (let ((decode (create-decode (car x))))
-      (map 'list (lambda (y) (apply decode (list y))) (cadr x))))
-  input))
+; convert digit list to base-10 value
+(defun digit-dec (digits)
+  (reduce (lambda (x y) (+ (* 10 x) y)) digits))
 
-; convert digit lists to base10 integers
-(setq decoded (map 'list (lambda (z) (reduce (lambda (x y) (+ (* 10 x) y)) z)) decoded-digits))
+(setq decoded-values
+  (loop :for line :in input
+    :collect
+    (let ((hash (create-decode (car line))))
+      (digit-dec
+        (loop :for output-value :in (cadr line)
+          :collect
+          (gethash (sort output-value #'string<=) hash))))))
 
 (format t "Part 1: ~d~%" (reduce '+ (map 'list (lambda (x) (get-unique (cadr x))) input)))
-(format t "Part 2: ~d~%" (reduce '+ decoded))
+(format t "Part 2: ~d~%" (reduce '+ decoded-values))
