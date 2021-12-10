@@ -7,7 +7,7 @@ error () { >&2 echo "[ERROR] $1"; }
 help () {
     usage
     echo '  -h      Show help (this message)'
-    echo '  -i      Which interpreter to use (one of "clisp" or "gcl", defualts to "gcl")'
+    echo '  -i      Which interpreter to use (one of "gcl", "clisp", or "sbcl"; defualts to "gcl")'
     echo '  -e      Executable command to run each file with. Overrides -i.'
     echo '  -t      Only display runtimes, not answers'
     echo '  -a      Only display answers, not runtimes'
@@ -53,12 +53,16 @@ TIME=$(which time)
 if [ -z "$EXEC" ]; then
     # try to find executable
     case $INTERP in
-        clisp)
+        clisp | CLISP)
             EXEC=$(which clisp)
             ;;
         gcl | GCL)
             EXEC="$(which gcl)"
             if [ ! -z EXEC ]; then EXEC="$EXEC -f"; fi
+            ;;
+        sbcl | SBCL)
+            EXEC="$(which sbcl)"
+            if [ ! -z EXEC ]; then EXEC="$EXEC --script"; fi
             ;;
         *)
             error "Invalid interpreter '$INTERP'"

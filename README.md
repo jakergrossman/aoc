@@ -2,13 +2,16 @@
 Solutions to [Advent of Code 2021](https://adventofcode.com/2021) in LISP.
 
 ## Requirements
-[GNU Common LISP](https://www.gnu.org/software/gcl/)
+One of:
+- [GNU Common LISP](https://www.gnu.org/software/gcl/)
+- [CLISP](https://clisp.sourceforge.io/)
+- [SBCL](http://www.sbcl.org/)
 
 ## Running
 ```
 Usage: ./run.sh [-i <interpreter>] [-e <run-command>] <day-specifier> ...
   -h      Show help (this message)
-  -i      Which interpreter to use (one of "clisp" or "gcl", defaults to "gcl")
+  -i      Which interpreter to use (one of "gcl", "clisp", or "sbcl"; defualts to "gcl")
   -e      Executable command to run each file with. Overrides -i.
   -t      Only display runtimes, not answers
   -a      Only display answers, not runtimes

@@ -82,9 +82,10 @@
 (fuel-left-cost1 (- range 2) (aref crab-freq (- range 1)))
 (fuel-right-cost1 1 (aref crab-freq 0))
 (setq costs1 (loop :for n :below range :collect (+ (aref right-fuel-costs n) (aref left-fuel-costs n))))
-(format t "Part 1: ~d~%" (reduce 'min costs1))
 
 (fuel-left-cost2 (- range 2) (aref crab-freq (- range 1)) 0)
 (fuel-right-cost2 1 (aref crab-freq 0) 0)
 (setq costs2 (loop :for n :below range :collect (+ (aref right-fuel-costs n) (aref left-fuel-costs n))))
+
+(format t "Part 1: ~d~%" (reduce 'min costs1))
 (format t "Part 2: ~d~%" (reduce 'min costs2))
