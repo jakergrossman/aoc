@@ -25,7 +25,7 @@ while getopts ":hg:" o; do
 done
 shift $((OPTIND-1))
 
-DAYS=$(find . -type d -name 'day*' | sed 's/^\.\///' | sort)
+DAYS=$(find . -type d -name 'day*' | sed 's/^\.\///' | sort --version-sort)
 TIME=$(which time)
 
 if [ -z "$GCL" ]; then
