@@ -72,7 +72,9 @@ if [ "$1" = "all" ]; then
     exit 0
 else
     for arg in $@; do
-        if echo "$DAYS" | grep -q "day$arg"; then
+        if echo "$DAYS" | grep -q "day0$arg"; then
+            run_day "day0$arg"
+        elif echo "$DAYS" | grep -q "day$arg"; then
             run_day "day$arg"
         elif echo "$DAYS" | grep -q "$arg"; then
             run_day "$arg"
