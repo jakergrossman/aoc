@@ -76,7 +76,7 @@
 ; the problem states that "all other locations will
 ; always be part of one basin" (i.e., disjoint sets)
 ; it can used as the visited array for *all* basins
-(setf visited (make-array (list (length input))))
+(setq visited (make-array (list (length input)) :initial-element nil))
 (defun basin-size (index)
   (cond
     ((aref visited index) 0)
