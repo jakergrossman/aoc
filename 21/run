@@ -1,0 +1,3 @@
+#!/bin/sh
+
+../include/run-lisp.sh $@

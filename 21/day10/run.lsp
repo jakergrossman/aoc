@@ -1,6 +1,6 @@
 ; Day 10: Syntax Scoring
 
-(load "../common.lsp")
+(load "../../include/common.lsp")
 
 (setq input (get-input "input.txt" :predicate #'string-empty-p))
 

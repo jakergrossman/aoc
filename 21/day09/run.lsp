@@ -1,6 +1,6 @@
 ; Day 9: Smoke Basin
 
-(load "../common.lsp")
+(load "../../include/common.lsp")
 
 (setq raw-input
   (get-input "input.txt" :predicate #'string-empty-p))

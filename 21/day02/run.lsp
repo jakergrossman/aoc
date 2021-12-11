@@ -1,6 +1,6 @@
 ; Day 2: Dive!
 
-(load "../common.lsp")
+(load "../../include/common.lsp")
 
 (defun process-line (line)
   (let* ((words (parse-words line)))

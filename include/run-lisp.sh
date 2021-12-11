@@ -2,7 +2,7 @@
 
 set -e
 
-usage () { echo "Usage: $0 [-i <interpreter>] [-e <run-command>] <day-specifier> ..."; }
+usage () { echo "Usage: ./run [-i <interpreter>] [-e <run-command>] <day-specifier> ..."; }
 error () { >&2 echo "[ERROR] $1"; }
 help () {
     usage
