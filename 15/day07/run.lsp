@@ -72,8 +72,6 @@
               (shift (cadr args)))
           (setf (gethash (caddr args) wires) (ash value (* -1 shift))))))))
 
-(compile 'run-ops)
-
 ; register expression
 (loop :for connect :in input
   do
