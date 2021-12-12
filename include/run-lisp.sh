@@ -2,27 +2,43 @@
 
 set -e
 
-usage () { echo "Usage: ./run [-i <interpreter>] [-e <run-command>] <day-specifier> ..."; }
+usage () { echo "Usage: ./run [-c <new-day>] [-i <interpreter>] [-e <run-command>] <day-specifier> ..."; }
 error () { >&2 echo "[ERROR] $1"; }
 help () {
     usage
     echo '  -h      Show help (this message)'
     echo '  -i      Which interpreter to use (one of "gcl", "clisp", or "sbcl"; defualts to "gcl")'
     echo '  -e      Executable command to run each file with. Overrides -i.'
+    echo '  -c      Create a new day.'
     echo '  -t      Only display runtimes, not answers'
     echo '  -a      Only display answers, not runtimes'
     exit 0
 }
+create () {
+    if [ -d "$1" ]; then
+        error "Target '$1' already exists!"
+        error "$(usage)"
+        exit 1
+    fi
+
+    mkdir "$1"
+    touch "$1"/input.txt
+    echo "(load \"../../include/common.lsp\")" > "$1"/run.lsp
+}
 
 INTERP="gcl"
 
-while getopts "hi:e:ta" o; do
+while getopts "hi:e:tac:" o; do
     case "${o}" in
         i)
             INTERP=${OPTARG}
             ;;
         e)
             EXEC=${OPTARG}
+            ;;
+        c)
+            create ${OPTARG}
+            exit 0
             ;;
         h)
             help

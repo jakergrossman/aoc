@@ -13,6 +13,7 @@ Usage: ./run [-i <interpreter>] [-e <run-command>] <day-specifier> ...
   -h      Show help (this message)
   -i      Which interpreter to use (one of "gcl", "clisp", or "sbcl"; defualts to "gcl")
   -e      Executable command to run each file with. Overrides -i.
+  -c      Create a new day.
   -t      Only display runtimes, not answers
   -a      Only display answers, not runtimes
 ```
