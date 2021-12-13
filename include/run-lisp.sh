@@ -23,7 +23,8 @@ create () {
 
     mkdir "$1"
     touch "$1"/input.txt
-    echo "(load \"../../include/common.lsp\")" > "$1"/run.lsp
+    GIT_ROOT="$(git rev-parse --show-toplevel)"
+    cp "$GIT_ROOT/include/template.lsp" "$1"/run.lsp
 }
 
 INTERP="gcl"

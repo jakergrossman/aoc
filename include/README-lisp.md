@@ -2,6 +2,8 @@
 Solutions to [Advent of Code](https://adventofcode.com/) in LISP.
 
 ## Requirements
+- Git
+
 One of:
 - [GNU Common LISP](https://www.gnu.org/software/gcl/)
 - [CLISP](https://clisp.sourceforge.io/)
