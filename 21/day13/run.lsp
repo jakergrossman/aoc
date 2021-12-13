@@ -2,6 +2,12 @@
 
 (load "../../include/common.lsp")
 
+(defun parse-fold-direction (line)
+  (let ((eq-pos (position #\= line)))
+    ; (axis, value)
+    (list (char line (- eq-pos 1))
+          (parse-integer (subseq line (+ eq-pos 1))))))
+
 ; reduce lines to ((points) (folds))
 (defun parse-input (lines)
   (reduce
@@ -43,12 +49,10 @@
       (t point))))
 
 (defun fold (points direction)
-  (let ((axis (car direction))
-        (value (cadr direction)))
-    (remove-duplicates
-      (mapcar (lambda (point) (fold-point point direction))
-              points)
-      :test #'equal)))
+  (remove-duplicates
+    (mapcar (lambda (point) (fold-point point direction))
+            points)
+    :test #'equal))
 
 (defun answer (&optional (file #P"input.txt"))
   (let* ((input-lines (get-input file :predicate #'string-empty-p))
