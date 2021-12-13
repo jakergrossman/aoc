@@ -38,13 +38,13 @@
           (list (parse-integer (subseq skip-start 0 delim-pos)))
           (parse-integers (subseq skip-start (+ 1 delim-pos)) delim))))))
 
-; parse space separated words from a string
-(defun parse-words (str)
-  (let* ((skipped (skip-char str #\Space))
-         (next-space (position #\Space skipped)))
+; parse delim separated words from a string
+(defun parse-words (str &optional (delim #\Space))
+  (let* ((skipped (skip-char str delim))
+         (next-delim (position delim skipped)))
     (cond
-      ((null next-space) (list skipped))
-      (t (append (list (subseq skipped 0 next-space)) (parse-words (subseq skipped next-space)))))))
+      ((null next-delim) (list skipped))
+      (t (append (list (subseq skipped 0 next-delim)) (parse-words (subseq skipped next-delim) delim))))))
 
 ; test whether a string is the empty string
 (defun string-empty-p (str)
