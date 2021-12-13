@@ -5,15 +5,15 @@ Solutions to [Advent of Code](https://adventofcode.com/) in LISP.
 - Git
 
 One of:
-- [GNU Common LISP](https://www.gnu.org/software/gcl/)
-- [CLISP](https://clisp.sourceforge.io/)
 - [SBCL](http://www.sbcl.org/)
+- [CLISP](https://clisp.sourceforge.io/)
+- [GNU Common LISP](https://www.gnu.org/software/gcl/)
 
 ## Running
 ```
-Usage: ./run [-i <interpreter>] [-e <run-command>] <day-specifier> ...
+Usage: ./run [-c <new-day>] [-i <interpreter>] [-e <run-command>] <day-specifier> ...
   -h      Show help (this message)
-  -i      Which interpreter to use (one of "gcl", "clisp", or "sbcl"; defualts to "gcl")
+  -i      Which interpreter to use (one of "sbcl", "clisp", or "gcl"; defualts to "sbcl")
   -e      Executable command to run each file with. Overrides -i.
   -c      Create a new day.
   -t      Only display runtimes, not answers

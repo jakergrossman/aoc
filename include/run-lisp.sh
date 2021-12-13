@@ -7,7 +7,7 @@ error () { >&2 echo "[ERROR] $1"; }
 help () {
     usage
     echo '  -h      Show help (this message)'
-    echo '  -i      Which interpreter to use (one of "gcl", "clisp", or "sbcl"; defualts to "gcl")'
+    echo '  -i      Which interpreter to use (one of "sbcl", "clisp", or "gcl"; defualts to "sbcl")'
     echo '  -e      Executable command to run each file with. Overrides -i.'
     echo '  -c      Create a new day.'
     echo '  -t      Only display runtimes, not answers'
@@ -27,7 +27,7 @@ create () {
     cp "$GIT_ROOT/include/template.lsp" "$1"/run.lsp
 }
 
-INTERP="gcl"
+INTERP="sbcl"
 
 while getopts "hi:e:tac:" o; do
     case "${o}" in
