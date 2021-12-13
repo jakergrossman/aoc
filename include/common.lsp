@@ -49,3 +49,38 @@
 ; test whether a string is the empty string
 (defun string-empty-p (str)
   (string= "" str))
+
+(defun number-char-p (c)
+  (or (digit-char-p c)
+      (char-equal #\- c)))
+
+; like `parse-integer` but behaves similar* to c's strtol:
+; it returns two values, the first being the first number
+; found in the string (possibly negative) and the second
+; being the rest of the string after that number
+;
+; * similar as in returning both the value and information
+;   about the remaining string
+(defun next-number (str)
+  (let ((next-pos (position-if #'number-char-p str)))
+    (cond
+      ((null next-pos)
+        (values nil nil))
+
+      (t (let ((end-pos (position-if-not #'number-char-p str :start next-pos)))
+        (cond
+          ((null end-pos)
+             (values (parse-integer (subseq str next-pos))
+                      nil))
+          (t (values (parse-integer (subseq str next-pos end-pos))
+                     (subseq str end-pos)))))))))
+
+; get all permutations of a list
+(defun permute (l)
+  (labels ((discover (remaining)
+              (cond ((null remaining) nil)
+                    ((null (cdr remaining)) (list remaining))
+                    (t (loop :for item :in remaining
+                             append (mapcar (lambda (x) (cons item x))
+                                            (discover (remove item remaining))))))))
+    (discover l)))
