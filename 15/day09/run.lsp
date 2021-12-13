@@ -20,22 +20,13 @@
 
 (defvar *cities* (remove-duplicates (loop for key being each hash-key in *costs* collect (car key))))
 
-(defun all-paths (cities)
-  (labels ((discover (left)
-              (cond ((null left) nil)
-                    ((null (cdr left)) (list left))
-                    (t (loop for city in left
-                             append (mapcar (lambda (x) (cons city x))
-                                            (discover (remove city left))))))))
-    (discover cities)))
-
 (defun path-cost (cities costs)
   (loop for i from 0 below (- (length cities) 1)
         sum (gethash (cons (nth i cities) (nth (+ 1 i) cities)) costs)))
 
 (defun answer (&optional (file #P"input.txt"))
   (multiple-value-bind (cities costs) (register-cities (get-input file))
-    (let* ((path-costs (mapcar (lambda (x) (path-cost x costs)) (all-paths cities)))
+    (let* ((path-costs (mapcar (lambda (x) (path-cost x costs)) (permute cities)))
            (min-cost (reduce #'min (subseq path-costs 0)))
            (max-cost (reduce #'max (subseq path-costs 0))))
       (values min-cost max-cost))))
