@@ -2,23 +2,19 @@
 
 (load "../../include/common.lsp")
 
-(setq input (car (get-input "input.txt")))
-
 (defun val (c)
-  (cond ((eq #\( c) 1) (t -1)))
+  (cond ((eq #\( c) 1)
+        ((eq #\) c) -1)))
 
-(setq part1
-  (reduce
-    (lambda (x y)
-      (+ x (val y)))
-    input
-    :initial-value 0))
+; append the new current floor to
+; the front of previously visited floors
+(defun count-floor (floors next)
+  (cons (+ (val next) (car floors)) floors))
 
-(defun first-negative (str &optional (level 0) (pos 0))
-  (cond
-    ((< level 0) pos)
-    ((string-empty-p str) nil)
-    (t (first-negative (subseq str 1) (+ level (val (char str 0))) (+ 1 pos)))))
+(defun answer (&optional (file #P"input.txt"))
+  (let* ((input (car (get-input file)))
+         (floors (reduce #'count-floor input :initial-value '(0))))
+    (format t "Part 1: ~d~%" (car floors)) ; floors is reversed
+    (format t "Part 2: ~d~%" (position-if (lambda (x) (< x 0)) (reverse floors)))))
 
-(format t "Part 1: ~d~%" part1)
-(format t "Part 2: ~d~%" (first-negative input))
+(answer)
