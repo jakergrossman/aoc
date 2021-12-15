@@ -2,71 +2,82 @@
 
 (load "../../include/common.lsp")
 
+(defparameter *side-length* 1000)
+
 ; process an input line, returning ((x1 y1) (x2 y2))
 (defun process-line (line)
-  (let* ((left-comma (position #\, line))
-        (left-space (position #\Space line))
-        (right-comma (position #\, line :from-end T))
-        (right-space (position #\Space line :from-end T))
-
-        (x1 (parse-integer (subseq line 0 left-comma)))
-        (y1 (parse-integer (subseq line (+ 1 left-comma) left-space)))
-
-        (x2 (parse-integer (subseq line (+ 1 right-space) right-comma)))
-        (y2 (parse-integer (subseq line (+ 1 right-comma)))))
-    (list (list x1 y1) (list x2 y2))))
+  (let* ((words (parse-words line))
+         (a (parse-integers (car words) #\,))
+         (b (parse-integers (caddr words) #\,)))
+    (list a b)))
 
 ; check if a movement is in a straight line
-(defun is-straight (entry)
-  (not
-    ; x1 != x2 && y1 != y2 i.e.; not a straight line
-    (and
-      (not (eq (caar entry) (caadr entry)))
-      (not (eq (cadar entry) (cadadr entry))))))
+(defun straight-p (entry)
+  ; x1 == x2 || y1 == y2
+  (or (eq (caar entry) (caadr entry))
+      (eq (cadar entry) (cadadr entry))))
 
-; only straight lines
-(setq input2
-  (get-input
-    "input.txt" :process #'process-line :predicate #'string-empty-p))
+; collect all positions between two points, inclusive
+(defun line-positions (a b)
+  (let* ((x1 (car a))
+         (y1 (cadr a))
+         (x2 (car b))
+         (y2 (cadr b)))
+    (cond ((eq x1 x2) (loop :for x = x1
+                            :for y :from (min y1 y2) :to (max y1 y2) 
+                            :collect (list x y)))
 
-(setq input1 (remove-if-not #'is-straight input2))
-(setq state1 (make-array '(1000000) :initial-element 0))
+          ((eq y1 y2) (loop :for x :from (min x1 x2) :to (max x1 x2)
+                            :for y = y1
+                            :collect (list x y)))
 
-; all lines
-(setq state2 (make-array '(1000000) :initial-element 0))
+          ; gross hack
+          ; to properly iterate diagonals
+          ((and (< x1 x2) (< y1 y2))
+             (loop :for x :from x1 :to x2
+                   :and y :from y1 :to y2
+                   :collect (list x y)))
 
-(defun draw2 (delta-x delta-y pos-x pos-y state)
-  (let* ((pos (+ (* pos-x 1000) pos-y))
-        (current-value (aref state pos))
-        (step-x (signum delta-x))
-        (step-y (signum delta-y)))
-    (setf (aref state pos) (+ 1 current-value))
-    (cond
-      ((and (eq 0 delta-x) (eq 0 delta-y)) state) ; done
-      (t (draw2 (- delta-x step-x) (- delta-y step-y) (+ pos-x step-x) (+ pos-y step-y) state)))))
+          ((and (< x1 x2) (> y1 y2))
+             (loop :for x :from x1 :to x2
+                   :and y :from y1 :downto y2
+                   :collect (list x y)))
 
+          ((and (> x1 x2) (< y1 y2) )
+             (loop :for x :from x1 :downto x2
+                   :and y :from y1 :to y2
+                   :collect (list x y)))
+
+          (t (loop :for x :from x1 :downto x2
+                   :and y :from y1 :downto y2
+                   :collect (list x y))))))
+
+; draws a single line from a to b
+(defun draw (a b state)
+  (loop :for pos :in (line-positions a b)
+        :for (x y) = pos
+        :do (let ((current (aref state (+ x (* *side-length* y)))))
+              (setf (aref state (+ x (* *side-length* y))) (+ 1 current)))))
+
+; modifies state in-place and returns a copy of the new state
 (defun run-input (input state)
-  (loop :for n :below (length input)
-    do
-    (let* ((movement (nth n input))
-          (x1 (caar movement))
-          (y1 (cadar movement))
-          (x2 (caadr movement))
-          (y2 (cadadr movement))
+  (loop :for line :in input
+        :for (a b) = line
+        :do (draw a b state)
 
-          (delta-x (- x2 x1))
-          (delta-y (- y2 y1)))
-      (draw2 delta-x delta-y x1 y1 state)))
-  (return-from run-input state))
+        ; subseq creates copy of array, ala copy-seq
+        :finally (return (subseq state 0))))
 
-(defun count-values (xs)
-  (reduce
-    (lambda (x y)
-      (cond
-        ((> y 1) (+ 1 x))
-        (t x)))
-    xs
-    :initial-value 0))
+(defun answer (&optional (file #P"input.txt"))
+  (let* ((input (mapcar #'process-line (get-input file)))
+         (lines (loop :for line :in input
+                      :if (straight-p line) :collect line :into straight
+                      :else :collect line :into diagonal
+                      :finally (return (list straight diagonal))))
+        (state (make-array (list (* *side-length* *side-length*)) :initial-element 0))
+        (part1 (run-input (car lines) state))
+        (part2 (run-input (cadr lines) state)))
+    (format t "Part 1: ~d~%" (count 2 part1 :test-not #'>))
+    (format t "Part 2: ~d~%" (count 2 part2 :test-not #'>))))
 
-(format t "Part 1: ~d~%" (count-values (run-input input1 state1)))
-(format t "Part 2: ~d~%" (count-values (run-input input2 state2)))
+(answer)
