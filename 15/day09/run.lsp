@@ -3,7 +3,7 @@
 ; Brute Force Solution
 ; TODO some TSP algorithm
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defvar *costs* (make-hash-table :test #'equal))
 

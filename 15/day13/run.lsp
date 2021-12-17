@@ -1,6 +1,6 @@
 ; Day 13: Knights of the Dinner Table
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 ; read each line into a link cost
 ; of the form:

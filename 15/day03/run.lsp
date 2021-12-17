@@ -1,6 +1,6 @@
 ; Day 3
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (setq input (car (get-input "input.txt")))
 

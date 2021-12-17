@@ -1,6 +1,6 @@
 ; Day 11: Dumbo Octopus
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defun process-line (line)
   (map 'list #'digit-char-p (coerce line 'list)))

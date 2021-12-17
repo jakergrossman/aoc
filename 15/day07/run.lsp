@@ -1,6 +1,6 @@
 ; Day 7: Some Assembly Required
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defparameter *bitwidth* 16)
 (defparameter *bitmask* 65535)

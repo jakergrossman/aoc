@@ -1,5 +1,7 @@
 ; Day 18: Like a GIF For Your Yard
 
+(load "../../include/lisp/common.lsp")
+
 #+(or :GCL :CLISP)
 (eval-when (:compile-toplevel :execute)
   (format t "This day is too slow on GCL or CLISP,~%use SBCL instead.~%")

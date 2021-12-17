@@ -1,6 +1,6 @@
 ; Day 4: Giant Squid
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defun parse-boards (lines)
   (cond

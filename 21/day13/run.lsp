@@ -1,6 +1,6 @@
 ; Day 13: Transparent Origami
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defun parse-fold-direction (line)
   (let ((eq-pos (position #\= line)))

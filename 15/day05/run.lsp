@@ -1,6 +1,6 @@
 ; Day 5: Doesn't He Have Intern-Elves For This?
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (setq input (get-input "input.txt" :predicate #'string-empty-p))
 

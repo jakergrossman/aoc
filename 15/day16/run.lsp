@@ -1,6 +1,6 @@
 ; Day 16: Aunt Sue
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defparameter *facts* '((|children| . 3) (|cats|        . 7)
                         (|samoyeds| . 2) (|pomeranians| . 3)

@@ -1,6 +1,6 @@
 ; Day 17: No Such Thing as Too Much
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 ; Find every way to hold `volume` units with `containers`
 (defun discover (containers volume &optional used-containers)

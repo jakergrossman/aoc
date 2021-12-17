@@ -1,6 +1,6 @@
 ; Day 2: I Was Told There Would Be No Math
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defun process-line (line)
   (parse-integers line #\x))

@@ -2,6 +2,8 @@
 
 set -e
 
+COMMON_DIR="$(dirname $0)"
+
 usage () { echo "Usage: ./run [-c <new-day>] [-i <interpreter>] [-e <run-command>] <day-specifier> ..."; }
 error () { >&2 echo "[ERROR] $1"; }
 help () {
@@ -23,8 +25,7 @@ create () {
 
     mkdir "$1"
     touch "$1"/input.txt
-    GIT_ROOT="$(git rev-parse --show-toplevel)"
-    cp "$GIT_ROOT/include/template.lsp" "$1"/run.lsp
+    cp "$COMMON_DIR/template.lsp" "$1"/run.lsp
 }
 
 INTERP="sbcl"

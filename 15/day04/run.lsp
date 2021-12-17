@@ -7,7 +7,7 @@
   (format t "This file is only~%compatible with SBCL.~%")
   (quit))
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (require :asdf)
 (require :sb-md5)

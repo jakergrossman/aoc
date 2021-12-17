@@ -1,6 +1,6 @@
 ; Day 11: Corporate Policy
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defun nice-letter-p (letter)
   (and (not (char-equal #\i letter))

@@ -5,7 +5,7 @@
   (format t "This day is too slow on GCL or CLISP,~%use SBCL instead.~%")
   (quit))
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defparameter *size* nil)
 

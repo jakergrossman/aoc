@@ -1,6 +1,6 @@
 ; Day 5: Hydrothermal Venture
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defparameter *side-length* 1000)
 

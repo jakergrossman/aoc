@@ -1,6 +1,6 @@
 ; Day 8: Matchsticks
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (setq input (get-input "input.txt"))
 

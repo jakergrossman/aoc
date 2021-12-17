@@ -1,6 +1,6 @@
 ;  Day 14: Extended Polymerization
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defvar *rules* nil)
 (defvar *pair-counts* nil)

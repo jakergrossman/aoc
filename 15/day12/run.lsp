@@ -2,7 +2,7 @@
 ;
 ; TODO: Part 2, would like to write an actual JSON parser
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defun numbers-only (str)
   (let ((remaining-str (copy-seq str))

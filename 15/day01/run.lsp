@@ -1,6 +1,6 @@
 ; Day 1: Not Quite Lisp
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defun val (c)
   (cond ((eq #\( c) 1)

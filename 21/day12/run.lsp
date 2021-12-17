@@ -1,6 +1,6 @@
 ; Day 12: Passage Pathing
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defun adjacency-lists (edges)
   (loop for v in (remove-duplicates (mapcar #'car edges) :test #'equal)

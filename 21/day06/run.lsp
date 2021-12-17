@@ -1,6 +1,6 @@
 ; Day 6: Lanternfish
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defun process-line (line)
   (parse-integers line #\,))

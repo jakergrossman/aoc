@@ -1,6 +1,6 @@
 ; Day 14: Reindeer Olympics
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defun run (seconds reindeer)
   (let* ((num-deer (length reindeer))

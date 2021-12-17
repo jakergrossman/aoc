@@ -1,6 +1,6 @@
 ; Day 6: Probably a Fire Hazard
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 (defun process-line (line)
   (let* ((words (parse-words line))

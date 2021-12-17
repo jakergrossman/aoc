@@ -1,6 +1,6 @@
 ; Day 8: Seven Segment Search
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
 
 ; split into ((signal-patterns) (output))
 (defun process-line (line)
