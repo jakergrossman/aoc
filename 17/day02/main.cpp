@@ -50,7 +50,7 @@ int part_two(vector<vector<int> > input) {
 }
 
 int main() {
-    std::vector<std::string> lines = AOC::get_lines("input.txt");
+    vector<std::string> lines = AOC::get_lines("input.txt");
 
     vector<vector<int> > input;
     for (unsigned int i = 0; i < lines.size(); i++) {

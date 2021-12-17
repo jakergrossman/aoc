@@ -24,4 +24,6 @@ int main()
 	part_two_result = part_two();
 
 	AOC::Timer::stop();
+
+	AOC::output_result(part_one_result, part_two_result, AOC::Timer::elapsed());
 }
