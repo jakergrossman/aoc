@@ -1,3 +1,3 @@
 ; Day XX
 
-(load "../../include/common.lsp")
+(load "../../include/lisp/common.lsp")
