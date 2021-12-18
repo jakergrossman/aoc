@@ -55,18 +55,6 @@ std::string AOC::Timer::human_readable(duration<double> duration) {
     return std::to_string((unsigned int)std::floor(magnitude)) + " " + unit;
 }
 
-template void AOC::output_result<unsigned int>(unsigned int part_one, unsigned int part_two, duration<double> elapsed);
-template void AOC::output_result<int>(int part_one, int part_two, duration<double> elapsed);
-template void AOC::output_result<std::string>(std::string part_one, std::string part_two, duration<double> elapsed);
-
-template <typename T>
-void AOC::output_result(T part_one, T part_two, duration<double> elapsed)
-{
-    std::cout << "Part 1: " << part_one << std::endl;
-    std::cout << "Part 2: " << part_two << std::endl;
-    std::cout << "Time: " << AOC::Timer::human_readable(elapsed) << std::endl;
-}
-
 // read lines of input
 std::vector<std::string> AOC::get_lines(const char* filename) {
     std::ifstream input_file(filename);

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <chrono>
 #include <string>
 #include <vector>
@@ -16,8 +17,16 @@ namespace AOC {
         std::string human_readable(duration<double>);
     }
 
-    template <typename T>
-    void output_result(T part_one, T part_two, duration<double> elapsed);
+    template <typename T, typename U>
+    void output_result(T part_one, U part_two, duration<double> elapsed);
 
     std::vector<std::string> get_lines(const char* filename);
+}
+
+template <typename T, typename U>
+void AOC::output_result(T part_one, U part_two, duration<double> elapsed)
+{
+    std::cout << "Part 1: " << part_one << std::endl;
+    std::cout << "Part 2: " << part_two << std::endl;
+    std::cout << "Time: " << AOC::Timer::human_readable(elapsed) << std::endl;
 }
