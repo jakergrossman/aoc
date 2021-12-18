@@ -33,7 +33,7 @@ std::pair<unsigned int, unsigned int> count_loop(vector<int> blocks)
         cycles++;
     }
 
-	return { cycles, cycles - seen[blocks] };
+    return { cycles, cycles - seen[blocks] };
 }
 
 int main()
@@ -50,11 +50,11 @@ int main()
     }
 
 
-	AOC::Timer::start();
+    AOC::Timer::start();
 
     std::pair<unsigned int, unsigned int> result = count_loop(input);
 
-	AOC::Timer::stop();
+    AOC::Timer::stop();
 
     AOC::output_result(result.first, result.second, AOC::Timer::elapsed());
 }
