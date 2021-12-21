@@ -1,21 +1,9 @@
-; read in lines of a file
-;
-; predicate - function to apply to decide whether to omit a line
-; keep - boolean that inverts the behavior of `predicate` (only accept lines which satisfy `predicate`)
-; process - function to apply to each accepted line
-(defun get-input (filename &key predicate keep process)
-  (with-open-file (stream filename)
-    (loop for line = (read-line stream nil nil)
-      while line
-      unless
-        (cond
-          ((null predicate) nil) ; no predicate, always keep
-          ((null keep) (funcall predicate line)) ; predicate, throw away matches
-          (t (not (funcall predicate line)))) ; predicate, keep matches
-      collect
-      (cond
-        ((null process) line)
-        (t (funcall process line))))))
+(defun get-lines (file)
+  "Read in all lines of a given file"
+  (with-open-file (stream file)
+    (loop :for line = (read-line stream nil nil)
+	  :while line
+	  :collect line)))
 
 ; skip the beginning of str that matches
 ; the character c
@@ -84,3 +72,6 @@
                              append (mapcar (lambda (x) (cons item x))
                                             (discover (remove item remaining))))))))
     (discover l)))
+
+(defun digit-dec (digits &key (radix 10))
+  (reduce (lambda (x y) (+ (* radix x) y)) digits))

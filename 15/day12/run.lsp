@@ -16,7 +16,7 @@
   nums))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let ((input (car (get-input file))))
+  (let ((input (car (get-lines file))))
     (reduce #'+ (numbers-only input))))
 
 (let ((a (answer)))

@@ -64,7 +64,7 @@
     new-password))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let* ((input (car (get-input file)))
+  (let* ((input (car (get-lines file)))
          (p1 (next-password input))
          (p2 (next-password p1)))
     (list p1 p2)))

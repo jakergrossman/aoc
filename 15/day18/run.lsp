@@ -66,8 +66,8 @@
               :initial-contents (reduce #'append (mapcar (lambda (x) (coerce x 'list)) lines))))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let ((state1 (process-lines (get-input file)))
-        (state2 (process-lines (get-input file)))
+  (let ((state1 (process-lines (get-lines file)))
+        (state2 (process-lines (get-lines file)))
         (p1 nil)
         (p2 nil))
     (dotimes (i 100) (tick-state state1))

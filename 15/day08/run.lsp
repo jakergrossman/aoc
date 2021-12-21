@@ -2,7 +2,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq input (get-input "input.txt"))
+(setq input (get-lines "input.txt"))
 
 (defun count-bytes (str)
   (cond

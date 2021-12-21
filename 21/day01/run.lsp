@@ -2,9 +2,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq input
-  (get-input
-    "input.txt" :process #'parse-integer :predicate #'string-empty-p))
+(setq input (mapcar #'parse-integer (get-lines "input.txt")))
 
 ; Count the number of times a value increases from the last
 (defun count1 (xs)

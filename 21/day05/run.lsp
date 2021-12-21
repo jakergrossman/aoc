@@ -69,7 +69,7 @@
         :finally (return (subseq state 0))))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let* ((input (mapcar #'process-line (get-input file)))
+  (let* ((input (mapcar #'process-line (get-lines file)))
          (lines (loop :for line :in input
                       :if (straight-p line) :collect line :into straight
                       :else :collect line :into diagonal

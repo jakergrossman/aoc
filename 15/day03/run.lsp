@@ -2,7 +2,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq input (car (get-input "input.txt")))
+(setq input (car (get-lines "input.txt")))
 
 (setq visited1 (make-hash-table :test #'equal))
 (setq visited2 (make-hash-table :test #'equal))

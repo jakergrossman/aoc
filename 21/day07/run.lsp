@@ -5,12 +5,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(defun process-line (line)
-  (parse-integers line #\,))
-
-(setq input
-  (car (get-input
-    "input.txt" :process #'process-line :predicate #'string-empty-p)))
+(setq input (parse-integers (car (get-lines "input.txt")) #\,))
 
 (setq input-array (make-array (list (length input)) :initial-contents input))
 

@@ -2,9 +2,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq input
-  (get-input
-    "input.txt" :predicate #'string-empty-p))
+(setq input (get-lines "input.txt"))
 
 ; count the number of zeros and ones in a specified column
 (defun get-freq (xs col zeros ones)

@@ -54,7 +54,7 @@
     (setf *pair-counts* new-pairs)))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let ((input (get-input file))
+  (let ((input (get-lines file))
         (start-elements nil)
         (part1 nil)
         (part2 nil))

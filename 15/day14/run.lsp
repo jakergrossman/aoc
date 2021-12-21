@@ -53,7 +53,7 @@
     (list speed run-time stop-time)))
 
 (defun answer (&optional (file #P"input.txt") (seconds 2503))
-  (let* ((reindeer (get-input file :process #'parse-line))
+  (let* ((reindeer (mapcar #'parse-line (get-lines file)))
          (result (run seconds reindeer)))
     (format t "Part 1: ~d~%" (reduce #'max (car result)))
     (format t "Part 2: ~d~%" (reduce #'max (cadr result)))))

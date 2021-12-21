@@ -25,7 +25,7 @@
         sum (gethash (cons (nth i cities) (nth (+ 1 i) cities)) costs)))
 
 (defun answer (&optional (file #P"input.txt"))
-  (multiple-value-bind (cities costs) (register-cities (get-input file))
+  (multiple-value-bind (cities costs) (register-cities (get-lines file))
     (let* ((path-costs (mapcar (lambda (x) (path-cost x costs)) (permute cities)))
            (min-cost (reduce #'min (subseq path-costs 0)))
            (max-cost (reduce #'max (subseq path-costs 0))))

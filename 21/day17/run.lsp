@@ -50,7 +50,7 @@
                          (parse-integer (subseq data (+ 2 dot-pos)))))))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let* ((input (parse-line (car (get-input file))))
+  (let* ((input (parse-line (car (get-lines file))))
          (max-x (apply #'max (car input)))
          (min-y (apply #'min (cadr input)))
          (part1 (triangle (- (abs min-y) 1)))

@@ -2,11 +2,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(defun process-line (line)
-  (parse-integers line #\,))
-
-(setq input
-  (car (get-input "input.txt" :process #'process-line :predicate #'string-empty-p)))
+(setq input (parse-integers (car (get-lines "input.txt")) #\,))
 
 (setq fish-state (loop :for n :below 9 :collect 0))
 (loop :for n :below (length input)

@@ -12,7 +12,7 @@
 (require :asdf)
 (require :sb-md5)
 
-(setq input (car (get-input "input.txt")))
+(setq input (car (get-lines "input.txt")))
 
 (defun part1 (&optional (n 1))
   (let* ((str (concatenate 'string input (write-to-string n)))

@@ -52,7 +52,7 @@
   remaining-sues))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let* ((input (get-input file))
+  (let* ((input (get-lines file))
          (sues (make-array '(500) :initial-element nil))
          (p1 nil)
          (p2 nil))

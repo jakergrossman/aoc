@@ -7,7 +7,7 @@
 
 (defparameter *side-length* 10)
 
-(let ((raw-input (get-input "input.txt" :process #'process-line :predicate #'string-empty-p)))
+(let ((raw-input (mapcar #'process-line (get-lines "input.txt"))))
   (setq input1 (make-array (list *side-length* *side-length*) :initial-contents raw-input))
   (setq input2 (make-array (list *side-length* *side-length*) :initial-contents raw-input)))
 

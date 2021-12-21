@@ -6,9 +6,7 @@
   (let* ((words (parse-words line)))
     (list (car words) (parse-integer (cadr words)))))
 
-(setq input
-  (get-input
-    "input.txt" :process #'process-line :predicate #'string-empty-p))
+(setq input (mapcar #'process-line (get-lines "input.txt")))
 
 (defun subpath1 (input)
   (reduce

@@ -5,11 +5,9 @@
 ; split into ((signal-patterns) (output))
 (defun process-line (line)
   (let ((words (parse-words line)))
-    (list (butlast words 5) (nthcdr 11 words))))
+    (list (subseq words 0 10) (subseq words 11))))
 
-(setq input
-  (get-input
-    "input.txt" :process #'process-line :predicate #'string-empty-p))
+(setq input (mapcar #'process-line (get-lines "input.txt")))
 
 (defun unique (x)
   (let ((len (length x)))

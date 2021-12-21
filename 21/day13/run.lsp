@@ -55,7 +55,7 @@
     :test #'equal))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let* ((input-lines (get-input file :predicate #'string-empty-p))
+  (let* ((input-lines (remove "" (get-lines file) :test #'string=))
          (input (parse-input input-lines))
          (points (car input))
          (folds (reverse (cadr input)))
@@ -63,7 +63,7 @@
          (p2 (reduce (lambda (x y) (fold x y))
                      folds
                      :initial-value points)))
-    (list p1 p2))) ;
+    (list p1 p2)))
 
 ; print output of folding
 (defun print-points (points)
@@ -79,10 +79,10 @@
     (mapc (lambda (p) (setf (aref grid (cadr p) (car p)) #\#))
           points)
 
-    (loop for y below height do
-          (loop for x below width do
-                (princ (aref grid y x)))
-          (terpri))))
+    (dotimes (y height)
+      (dotimes (x width)
+        (princ (aref grid y x)))
+      (terpri))))
 
 (print-points (cadr (answer)))
 (format t "Part 1: ~d~%" (car (answer)))

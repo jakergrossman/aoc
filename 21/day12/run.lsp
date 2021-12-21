@@ -8,7 +8,7 @@
 
 (defun cave-graph (file)
   (adjacency-lists
-   (loop for line in (get-input file)
+   (loop for line in (get-lines file)
          for (u v) = (mapcar #'intern (parse-words line #\-))
          collect (cons u v) collect (cons v u))))
 

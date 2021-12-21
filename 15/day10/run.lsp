@@ -55,7 +55,7 @@
 
 (defun answer (iterations &key (file "input.txt") seed)
   (let ((seed1 (if (null seed)
-                   (mapcar #'digit-char-p (coerce (car (get-input file)) 'list))
+                   (mapcar #'digit-char-p (coerce (car (get-lines file)) 'list))
                    seed)))
         (dotimes (i iterations) (setf seed1 (next-sequence seed1)))
         seed1))

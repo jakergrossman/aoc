@@ -2,7 +2,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq input (get-input "input.txt" :predicate #'string-empty-p))
+(setq input (get-lines "input.txt"))
 
 ; return first invalid character, or the remaining stack if str is exhausted
 (defun validate (str stack)

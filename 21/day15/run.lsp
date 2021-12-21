@@ -85,7 +85,7 @@
   (reduce #'+ (mapcar (lambda (x) (aref grid (cdr x) (car x))) path)))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let* ((grid1 (process-lines (get-input file)))
+  (let* ((grid1 (process-lines (get-lines file)))
          (grid2 (interpolate-grid grid1 5))
          (costs1 (make-hash-table :test #'equal))
          (costs2 (make-hash-table :test #'equal))

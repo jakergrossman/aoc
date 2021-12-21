@@ -67,7 +67,7 @@
             :sum (get-cost (nth (- num-people 1) seating) (nth 0 seating) link-costs))))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let* ((raw-input (get-input file))
+  (let* ((raw-input (get-lines file))
          (link-costs (adjacency-lists (process-lines raw-input)))
          (attendees (loop :for attendee :in (mapcar #'car link-costs) :collect attendee))
          (seatings (permute attendees))

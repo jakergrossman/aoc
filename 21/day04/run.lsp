@@ -10,7 +10,7 @@
             (next (nthcdr 6 lines)))
         (append (list board) (parse-boards next))))))
 
-(setq lines (get-input "input.txt"))
+(setq lines (get-lines "input.txt"))
 (setq numbers (parse-integers (car lines) #\,))
 (setq boards (parse-boards (cddr lines)))
 

@@ -141,7 +141,7 @@
     largest))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let* ((numbers (get-input file))
+  (let* ((numbers (get-lines file))
          (p1 (magnitude (snail-read (snail-sum numbers))))
          (p2 (largest-sum numbers)))
     (format t "Part 1: ~d~%" p1)

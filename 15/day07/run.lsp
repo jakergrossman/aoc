@@ -26,7 +26,7 @@
         ; a OP b -> c
         (list (nth 1 words) (nth 0 words) (nth 2 words) (nth 4 words))))))
 
-(setq input (get-input "input.txt" :process #'parse-line))
+(setq input (mapcar #'parse-line (get-lines "input.txt")))
 
 (defun eval-expr (expr)
   (cond

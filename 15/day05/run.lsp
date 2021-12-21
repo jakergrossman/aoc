@@ -2,7 +2,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq input (get-input "input.txt" :predicate #'string-empty-p))
+(setq input (get-lines "input.txt"))
 
 (defun vowel-p (char)
   (find char "aeiou" :test #'char-equal))

@@ -5,8 +5,7 @@
 (defun process-line (line)
   (parse-integers line #\x))
 
-(setq input
-  (get-input "input.txt" :process #'process-line :predicate #'string-empty-p))
+(setq input (mapcar #'process-line (get-lines "input.txt")))
 
 (setq part1
   (reduce

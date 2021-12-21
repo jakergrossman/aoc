@@ -110,7 +110,7 @@
                    (cond ((eq a b) 1) (t 0)))))))
 
 (defun answer (&optional (file #P"input.txt"))
-  (let ((decoded-input (parse-packet (parse-hex (car (get-input file))))))
+  (let ((decoded-input (parse-packet (parse-hex (car (get-lines file))))))
     (format t "Part 1: ~d~%" (version-sum decoded-input))
     (format t "Part 2: ~d~%" (interpret-result decoded-input))))
 

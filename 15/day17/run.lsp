@@ -18,7 +18,7 @@
                            used-containers))))))
 
 (defun answer (&optional (file #P"input.txt") (volume 150))
-  (let* ((containers (get-input file :process #'parse-integer))
+  (let* ((containers (mapcar #'parse-integer (get-lines file)))
          (p1-combs (discover containers volume))
          (min-containers (reduce #'min (mapcar #'length p1-combs)))
          (p2-combs (remove min-containers p1-combs :test-not #'eq :key #'length)))

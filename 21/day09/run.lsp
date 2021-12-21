@@ -2,8 +2,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq raw-input
-  (get-input "input.txt" :predicate #'string-empty-p))
+(setq raw-input (get-lines "input.txt"))
 
 (setq width (length (car raw-input)))
 (setq height (length raw-input))

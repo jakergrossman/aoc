@@ -12,8 +12,7 @@
       ((string= "toggle" first-word) (list "toggle" start-pos end-pos))
       (t (list (cadr words) start-pos end-pos)))))
 
-(setq input
-  (get-input "input.txt" :process #'process-line :predicate #'string-empty-p))
+(setq input (mapcar #'process-line (get-lines "input.txt")))
 
 ; (setq lights1
 ;   (make-array (list 1000 1000) :initial-element nil))
