@@ -1,0 +1,80 @@
+--- day01 ---
+Part 1: 1184
+Part 2: 1158
+
+--- day02 ---
+Part 1: 1693300
+Part 2: 1857958050
+
+--- day03 ---
+Part 1: 2035764
+Part 2: 2817661
+
+--- day04 ---
+Part 1: 45031
+Part 2: 2568
+
+--- day05 ---
+Part 1: 6283
+Part 2: 18864
+
+--- day06 ---
+Part 1: 377263
+Part 2: 1695929023803
+
+--- day07 ---
+Part 1: 355150
+Part 2: 98368490
+
+--- day08 ---
+Part 1: 383
+Part 2: 998900
+
+--- day09 ---
+Part 1: 564
+Part 2: 1038240
+
+--- day10 ---
+Part 1: 290691
+Part 2: 2768166558
+
+--- day11 ---
+Part 1: 1637
+Part 2: 242
+
+--- day12 ---
+Part 1: 4707
+Part 2: 130493
+
+--- day13 ---
+Part 1: 671
+Part 2: PCPHARKL
+
+--- day14 ---
+Part 1: 2967
+Part 2: 3692219987038
+
+--- day15 ---
+Part 1: 628
+Part 2: 2911
+
+--- day16 ---
+Broken for now on SBCL and CLISP, try GCL
+
+
+--- day17 ---
+Part 1: 5778
+Part 2: 2576
+
+--- day18 ---
+Part 1: 4469
+Part 2: 4770
+
+--- day20 ---
+Part 1: 5259
+Part 2: 15287
+
+--- day22 ---
+Part 1: 591365
+Part 2: 1211172281877240
+

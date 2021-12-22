@@ -11,24 +11,24 @@ One of:
 
 ## Running
 ```
-Usage: ./run [-c <new-day>] [-i <interpreter>] [-e <run-command>] <day-specifier> ...
-  -h      Show help (this message)
-  -i      Which interpreter to use (one of "sbcl", "clisp", or "gcl"; defualts to "sbcl")
-  -e      Executable command to run each file with. Overrides -i.
-  -c      Create a new day.
-  -t      Only display runtimes, not answers
-  -a      Only display answers, not runtimes
+Usage: ./aoc [run|test|create|help] [-i <interpreter>] <day-specifier> ...
+
+AVAILABLE SUBCOMMANDS
+    run     Run the specified day(s).
+    test    Test the specified day(s) for correct output.
+    create  Create the specified day(s).
+    help    Show help (this message).
+
+OPTIONS
+    -i      Which interpreter to use (one of "sbcl", "clisp", or "gcl"; defualts to "sbcl").
 ```
-
-To run and print outputs, invoke `run` with one or more days, specified as `dayx` (with leading zeros, i.e.
-`day01`) or just `x`.
-
-Alternatively, use `all` to run all days:
 
 ### Examples
 
 ```console
-$ ./run 1               # run day one with default options
-$ ./run -i clisp day02  # run day 2 with the CLISP interpreter
-$ ./run -t day01 02 3   # run days 1, 2, and 3, printing only times
+$ ./aoc run 1                 # run day one
+$ ./aoc run -i clisp day01 2  # run days 1 and 2 with CLISP as the interpreter
+$ ./aoc run all               # run every day
+$ ./aoc test 1 day02          # test days 1 and 2
+$ ./aoc test all              # test all days
 ```

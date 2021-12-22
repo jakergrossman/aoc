@@ -6,7 +6,7 @@
   (let* ((words (parse-words line)))
     (list (car words) (parse-integer (cadr words)))))
 
-(setq input (mapcar #'process-line (get-lines "input.txt")))
+(defparameter input (mapcar #'process-line (get-lines "input.txt")))
 
 (defun subpath1 (input)
   (reduce
@@ -47,8 +47,8 @@
     input
     :initial-value (list 0 0 0)))
 
-(setq part1 (subpath1 input))
-(setq part2 (subpath2 input))
+(defparameter part1 (subpath1 input))
+(defparameter part2 (subpath2 input))
 
 (format t "Part 1: ~d~%" (* (car part1) (cadr part1)))
 (format t "Part 2: ~d~%" (* (car part2) (cadr part2)))

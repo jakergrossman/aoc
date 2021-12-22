@@ -5,22 +5,22 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq input (parse-integers (car (get-lines "input.txt")) #\,))
+(defparameter input (parse-integers (car (get-lines "input.txt")) #\,))
 
-(setq input-array (make-array (list (length input)) :initial-contents input))
+(defparameter input-array (make-array (list (length input)) :initial-contents input))
 
-(setq range (+ 1 (reduce #'max input-array)))
+(defparameter range (+ 1 (reduce #'max input-array)))
 
 ; convert input to crab frequency mapping
-(setq crab-freq (make-array (list (+ 1 range)) :initial-element 0))
+(defparameter crab-freq (make-array (list (+ 1 range)) :initial-element 0))
 (loop :for n :below (length input-array)
   do
   (setf
     (aref crab-freq (aref input-array n))
     (+ 1 (aref crab-freq (aref input-array n)))))
 
-(setq right-fuel-costs (make-array (list range) :initial-element 0))
-(setq left-fuel-costs (make-array (list  range) :initial-element 0))
+(defparameter right-fuel-costs (make-array (list range) :initial-element 0))
+(defparameter left-fuel-costs (make-array (list  range) :initial-element 0))
 
 (defun fuel-right-cost1 (pos passed-crabs)
   (cond
@@ -76,11 +76,11 @@
 
 (fuel-left-cost1 (- range 2) (aref crab-freq (- range 1)))
 (fuel-right-cost1 1 (aref crab-freq 0))
-(setq costs1 (loop :for n :below range :collect (+ (aref right-fuel-costs n) (aref left-fuel-costs n))))
+(defparameter costs1 (loop :for n :below range :collect (+ (aref right-fuel-costs n) (aref left-fuel-costs n))))
 
 (fuel-left-cost2 (- range 2) (aref crab-freq (- range 1)) 0)
 (fuel-right-cost2 1 (aref crab-freq 0) 0)
-(setq costs2 (loop :for n :below range :collect (+ (aref right-fuel-costs n) (aref left-fuel-costs n))))
+(defparameter costs2 (loop :for n :below range :collect (+ (aref right-fuel-costs n) (aref left-fuel-costs n))))
 
 (format t "Part 1: ~d~%" (reduce 'min costs1))
 (format t "Part 2: ~d~%" (reduce 'min costs2))

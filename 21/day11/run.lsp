@@ -8,8 +8,8 @@
 (defparameter *side-length* 10)
 
 (let ((raw-input (mapcar #'process-line (get-lines "input.txt"))))
-  (setq input1 (make-array (list *side-length* *side-length*) :initial-contents raw-input))
-  (setq input2 (make-array (list *side-length* *side-length*) :initial-contents raw-input)))
+  (defparameter input1 (make-array (list *side-length* *side-length*) :initial-contents raw-input))
+  (defparameter input2 (make-array (list *side-length* *side-length*) :initial-contents raw-input)))
 
 (defun index-xy (index)
   (multiple-value-bind (y x) (floor index *side-length*) (list x y)))
@@ -81,7 +81,7 @@
         (setf (aref state y x) (+ val 1))))))
 
 ; collect flash-counts for first 100 ticks
-(setq total-flashes (loop :for n :below 100 :collect (tick input1)))
+(defparameter total-flashes (loop :for n :below 100 :collect (tick input1)))
 
 ; could just add 100 and use the already
 ; modified state, but who's to say the first unison isn't < 100
@@ -91,7 +91,7 @@
       ((eq flashes (* *side-length* *side-length*)) pos)
       (t (find-unison (+ 1 pos))))))
 
-(setq unison-step (find-unison 1))
+(defparameter unison-step (find-unison 1))
 
 (format t "Part 1: ~d~%" (reduce '+ total-flashes))
 (format t "Part 2: ~d~%" unison-step)

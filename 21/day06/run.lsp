@@ -2,9 +2,9 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq input (parse-integers (car (get-lines "input.txt")) #\,))
+(defparameter input (parse-integers (car (get-lines "input.txt")) #\,))
 
-(setq fish-state (loop :for n :below 9 :collect 0))
+(defparameter fish-state (loop :for n :below 9 :collect 0))
 (loop :for n :below (length input)
   do (apply (lambda (x) (setf (nth x fish-state) (+ 1 (nth x fish-state)))) (list (nth n input))))
 

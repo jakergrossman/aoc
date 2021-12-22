@@ -2,7 +2,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq input (get-lines "input.txt"))
+(defparameter input (get-lines "input.txt"))
 
 ; count the number of zeros and ones in a specified column
 (defun get-freq (xs col zeros ones)
@@ -22,10 +22,10 @@
 (defun bin-to-dec (n)
   (reduce (lambda (x y) (+ (* 2 x) y)) n))
 
-(setq digit-freq
+(defparameter digit-freq
   (loop :for n :below (length (car input)) :collect (get-freq input n 0 0)))
 
-(setq gamma-bin
+(defparameter gamma-bin
   (map 'list
     (lambda (x)
       (cond
@@ -33,9 +33,9 @@
         (t 1)))
     digit-freq))
 
-(setq gamma-dec (bin-to-dec gamma-bin))
+(defparameter gamma-dec (bin-to-dec gamma-bin))
 
-(setq epsilon-bin
+(defparameter epsilon-bin
   (map 'list
     (lambda (x)
       (cond
@@ -43,7 +43,7 @@
         (t 0)))
     digit-freq))
 
-(setq epsilon-dec (bin-to-dec epsilon-bin))
+(defparameter epsilon-dec (bin-to-dec epsilon-bin))
 
 (defun pick-filter (rating-type freq)
   (cond
@@ -70,8 +70,8 @@
             (filter (pick-filter rating-type freq)))
         (find-rating rating-type (remove-if-not (lambda (x) (eq filter (char x pos))) xs) (+ pos 1))))))
 
-(setq oxygen-rating (parse-integer (find-rating 'oxygen input 0) :radix 2))
-(setq co2-rating (parse-integer (find-rating 'co2 input 0) :radix 2))
+(defparameter oxygen-rating (parse-integer (find-rating 'oxygen input 0) :radix 2))
+(defparameter co2-rating (parse-integer (find-rating 'co2 input 0) :radix 2))
 
 (format t "Part 1: ~d~%" (* epsilon-dec gamma-dec))
 (format t "Part 2: ~d~%" (* co2-rating oxygen-rating))

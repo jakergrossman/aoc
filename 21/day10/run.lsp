@@ -2,7 +2,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq input (get-lines "input.txt"))
+(defparameter input (get-lines "input.txt"))
 
 ; return first invalid character, or the remaining stack if str is exhausted
 (defun validate (str stack)
@@ -47,8 +47,8 @@
           stack
           :initial-value 0)))))
 
-(setq part1-scores (map 'list #'score1 input))
-(setq part2-scores (sort (remove 0 (map 'list #'score2 input)) #'<))
+(defparameter part1-scores (map 'list #'score1 input))
+(defparameter part2-scores (sort (remove 0 (map 'list #'score2 input)) #'<))
 
 (format t "Part 1: ~d~%" (reduce '+ part1-scores))
 (format t "Part 2: ~d~%" (nth (floor (length part2-scores) 2) part2-scores))

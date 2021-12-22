@@ -2,7 +2,7 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq input (mapcar #'parse-integer (get-lines "input.txt")))
+(defparameter input (mapcar #'parse-integer (get-lines "input.txt")))
 
 ; Count the number of times a value increases from the last
 (defun count1 (xs)
@@ -26,8 +26,10 @@
           ((< prev sum) (+ 1 (count2 (cdr xs) sum)))
           (t (count2 (cdr xs) sum)))))))
 
-(compile 'count1)
-(compile 'count2)
+#+:GCL
+(eval-when (:compile-toplevel :execute)
+  (compile 'count1)
+  (compile 'count2))
 
 (format t "Part 1: ~d~%" (count1 input))
 (format t "Part 2: ~d~%" (count2 input 0))

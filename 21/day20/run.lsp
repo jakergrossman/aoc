@@ -2,6 +2,11 @@
 
 (load "../../include/lisp/common.lsp")
 
+#+:GCL
+(eval-when (:compile-toplevel :execute)
+  (format t "This day is too slow on GCL,~%try SBCL or CLISP~%")
+  (quit))
+
 (defun point-digits (state x y frontier-fill)
   "Find the binary digits of an (x . y) point in state"
   (let* ((discovered)

@@ -7,7 +7,7 @@
   (let ((words (parse-words line)))
     (list (subseq words 0 10) (subseq words 11))))
 
-(setq input (mapcar #'process-line (get-lines "input.txt")))
+(defparameter input (mapcar #'process-line (get-lines "input.txt")))
 
 (defun unique (x)
   (let ((len (length x)))
@@ -79,7 +79,7 @@
 (defun digit-dec (digits)
   (reduce (lambda (x y) (+ (* 10 x) y)) digits))
 
-(setq decoded-values
+(defparameter decoded-values
   (loop :for line :in input
     :collect
     (let ((hash (create-decode (car line))))

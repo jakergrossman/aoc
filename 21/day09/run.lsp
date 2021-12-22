@@ -2,12 +2,12 @@
 
 (load "../../include/lisp/common.lsp")
 
-(setq raw-input (get-lines "input.txt"))
+(defparameter raw-input (get-lines "input.txt"))
 
-(setq width (length (car raw-input)))
-(setq height (length raw-input))
+(defparameter width (length (car raw-input)))
+(defparameter height (length raw-input))
 
-(setq input
+(defparameter input
   (make-array
     (list (* (length (car raw-input)) (length raw-input)))
     :initial-contents
@@ -36,7 +36,7 @@
       ((and (< y (- height 1)) (>= target (aref input (+ index width)))) nil)
       (t t))))
 
-(setq low-points
+(defparameter low-points
   (loop :for n :below (length input) :unless (not (lowest n)) :collect n))
 
 ; valid neighbors are neighbors that:
@@ -75,7 +75,7 @@
 ; the problem states that "all other locations will
 ; always be part of one basin" (i.e., disjoint sets)
 ; it can used as the visited array for *all* basins
-(setq visited (make-array (list (length input)) :initial-element nil))
+(defparameter visited (make-array (list (length input)) :initial-element nil))
 (defun basin-size (index)
   (cond
     ((aref visited index) 0)
@@ -89,7 +89,7 @@
               (reduce '+ (map 'list #'basin-size new-neighbors)))))))))
 
 ; find a basin for each low point
-(setq basins (sort (map 'list #'basin-size low-points) #'>))
+(defparameter basins (sort (map 'list #'basin-size low-points) #'>))
 
 (format t "Part 1: ~d~%"
   (reduce

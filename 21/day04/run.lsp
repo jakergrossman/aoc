@@ -10,12 +10,12 @@
             (next (nthcdr 6 lines)))
         (append (list board) (parse-boards next))))))
 
-(setq lines (get-lines "input.txt"))
-(setq numbers (parse-integers (car lines) #\,))
-(setq boards (parse-boards (cddr lines)))
+(defparameter lines (get-lines "input.txt"))
+(defparameter numbers (parse-integers (car lines) #\,))
+(defparameter boards (parse-boards (cddr lines)))
 
 ; convert raw boards to board-state indicators
-(setq board-states
+(defparameter board-states
   (map 'list
     (lambda (xs)
       (map 'list (lambda (entry) (list entry 0)) xs))
