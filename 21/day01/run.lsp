@@ -2,34 +2,23 @@
 
 (load "../../include/lisp/common.lsp")
 
-(defparameter input (mapcar #'parse-integer (get-lines "input.txt")))
-
-; Count the number of times a value increases from the last
 (defun count1 (xs)
-  (let ((head (car xs))
-        (tail (cdr xs)))
-    (cond
-      ((null tail) 0)
-      ((< head (car tail)) (+ 1 (count1 tail)))
-      (t (count1 tail)))))
+  "Count the amount of times XS[N+1] > XS[N]"
+  (loop for n from 0 below (1- (length xs))
+        for a = (nth n xs)
+        for b = (nth (1+ n) xs)
+        count (> b a)))
 
-; Count the number of times the sum of a 3 count window increases from the last
-(defun count2 (xs prev)
-  (cond
-    ((< (length xs) 4) 0) ; no more chunks to compare
-    (t
-      (let* ((a (car xs))
-            (b (cadr xs))
-            (c (caddr xs))
-            (sum (+ (+ a b) c)))
-        (cond
-          ((< prev sum) (+ 1 (count2 (cdr xs) sum)))
-          (t (count2 (cdr xs) sum)))))))
+(defun count2 (xs)
+  "Count the amount of times XS[N+1:N+4] > XS[N:N+3"
+  (loop for n from 0 below (- (length xs) 3)
+        for a = (subseq xs n (+ n 3))
+        for b = (subseq xs (1+ n) (+ n 4))
+        count (> (apply #'+ b) (apply #'+ a))))
 
-#+:GCL
-(eval-when (:compile-toplevel :execute)
-  (compile 'count1)
-  (compile 'count2))
+(defun answer (&optional (file #P"input.txt"))
+  (let ((input (mapcar #'parse-integer (get-lines file))))
+    (format t "Part 1: ~d~%" (count1 input))
+    (format t "Part 2: ~d~%" (count2 input))))
 
-(format t "Part 1: ~d~%" (count1 input))
-(format t "Part 2: ~d~%" (count2 input 0))
+(answer)

@@ -2,76 +2,62 @@
 
 (load "../../include/lisp/common.lsp")
 
-(defparameter input (get-lines "input.txt"))
+(defun get-freq (lines)
+  "Return an array where the Nth position's sign indicates the most common bit.
 
-; count the number of zeros and ones in a specified column
-(defun get-freq (xs col zeros ones)
-  (cond
-    ((null xs) (list zeros ones))
-    (t (cond
-      ((eq (char (car xs) col) #\1)
-          (get-freq (cdr xs) col zeros (+ 1 ones)))
+When the Nth position is positive, 1 is the most common bit.
+When the Nth position is negative, 0 is the most common bit.
+When the Nth position is 0, 1 and 0 are equally common."
+   (let ((freq (make-array (length (car lines)) :initial-element 0)))
+     (loop for line in lines do
+       (loop for n below (length line)
+             for char = (char line n)
+             do (ecase char
+                  (#\0 (decf (aref freq n)))
+                  (#\1 (incf (aref freq n))))))
+     freq))
 
-      ((eq (char (car xs) col) #\0)
-          (get-freq (cdr xs) col (+ 1 zeros) ones))))))
+(defun gamma (freq)
+  (map 'string
+       (lambda (x)
+         (ecase (signum x)
+           ((0 1) #\1)
+           (-1 #\0)))
+       freq))
 
-; convert binary digits to decimal
-;
-; in:  list of binary digits, e.g.:      (1 0 1 1 0) (0 1 1 0 0)
-; out: the decimal representation, e.g.: 20 12
-(defun bin-to-dec (n)
-  (reduce (lambda (x y) (+ (* 2 x) y)) n))
+(defun epsilon (freq)
+  (map 'string
+       (lambda (x)
+         (ecase (signum x)
+           (-1 #\1)
+           ((0 1) #\0)))
+       freq))
 
-(defparameter digit-freq
-  (loop :for n :below (length (car input)) :collect (get-freq input n 0 0)))
+(defun filter (rating-type freq)
+  "Determine which value to filter based on RATING-TYPE and FREQ"
+  (ecase rating-type
+    (oxygen (if (>= freq 0) #\1 #\0))
+    (co2 (if (< freq 0) #\1 #\0))))
 
-(defparameter gamma-bin
-  (map 'list
-    (lambda (x)
-      (cond
-        ((< (car x) (cadr x)) 0)
-        (t 1)))
-    digit-freq))
+(defun rating (type lines)
+  (let ((remaining lines))
+    (loop while (> (length remaining) 1)
+          for pos from 0
+          for freq = (get-freq remaining)
+          for filter = (filter type (aref freq pos))
+          do (setf remaining (remove filter remaining :key (lambda (x) (char x pos))))
+          finally (return (car remaining)))))
 
-(defparameter gamma-dec (bin-to-dec gamma-bin))
+(defun answer (&optional (file #P"input.txt"))
+  (let* ((lines (get-lines file))
+         (freq (get-freq lines))
+         (gamma-rate (gamma freq))
+         (epsilon-rate (epsilon freq))
+         (oxygen-rating (rating 'oxygen lines))
+         (co2-rating (rating 'co2 lines)))
+    (format t "Part 1: ~d~%" (* (parse-integer gamma-rate :radix 2)
+                                (parse-integer epsilon-rate :radix 2)))
+    (format t "Part 2: ~d~%" (* (parse-integer oxygen-rating :radix 2)
+                                (parse-integer co2-rating :radix 2)))))
 
-(defparameter epsilon-bin
-  (map 'list
-    (lambda (x)
-      (cond
-        ((< (car x) (cadr x)) 1)
-        (t 0)))
-    digit-freq))
-
-(defparameter epsilon-dec (bin-to-dec epsilon-bin))
-
-(defun pick-filter (rating-type freq)
-  (cond
-    ((eq rating-type 'oxygen)
-      ; oxygen rating filter is greater of 1 & 0
-      (cond
-        ((> (car freq) (cadr freq)) #\0)
-        (t #\1)))
-
-    ((eq rating-type 'co2)
-      ; co2 rating filter is lesser of 1 & 0
-      (cond
-        ((> (car freq) (cadr freq)) #\1)
-        (t #\0)))))
-
-
-; find either the oxygen or co2 rating
-(defun find-rating (rating-type xs pos)
-  (cond
-    ((null xs) '())
-    ((eq 1 (length xs)) (car xs))
-    (t
-      (let* ((freq (get-freq xs pos 0 0))
-            (filter (pick-filter rating-type freq)))
-        (find-rating rating-type (remove-if-not (lambda (x) (eq filter (char x pos))) xs) (+ pos 1))))))
-
-(defparameter oxygen-rating (parse-integer (find-rating 'oxygen input 0) :radix 2))
-(defparameter co2-rating (parse-integer (find-rating 'co2 input 0) :radix 2))
-
-(format t "Part 1: ~d~%" (* epsilon-dec gamma-dec))
-(format t "Part 2: ~d~%" (* co2-rating oxygen-rating))
+(answer)

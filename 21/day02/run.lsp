@@ -2,53 +2,38 @@
 
 (load "../../include/lisp/common.lsp")
 
-(defun process-line (line)
-  (let* ((words (parse-words line)))
-    (list (car words) (parse-integer (cadr words)))))
-
-(defparameter input (mapcar #'process-line (get-lines "input.txt")))
-
 (defun subpath1 (input)
-  (reduce
-    (lambda (x y)
-      (let ((depth (car x))
-            (distance (cadr x))
-            (action (car y))
-            (value (cadr y)))
-        (cond
-          ((string= action "forward")
-            (list depth (+ distance value)))
+  (loop for (action value) in input
+        when (equal action '|forward|)
+          sum value into distance
 
-          ((string= action "up")
-            (list (- depth value) distance))
+        when (equal action '|up|)
+          sum (- value) into depth
 
-          ((string= action "down")
-            (list (+ depth value) distance)))))
-    input
-    :initial-value (list 0 0)))
+        when (equal action '|down|)
+          sum value into depth
+
+        finally (return (* distance depth))))
 
 (defun subpath2 (input)
-  (reduce
-    (lambda (x y)
-      (let ((depth (car x))
-            (distance (cadr x))
-            (aim (caddr x))
-            (action (car y))
-            (value (cadr y)))
-        (cond
-          ((string= action "forward")
-            (list (+ depth (* aim value)) (+ distance value) aim))
+  (loop for (action value) in input
+        when (equal action '|forward|)
+          sum value into distance
+          and sum (* value aim) into depth
 
-          ((string= action "up")
-            (list depth distance (- aim value)))
+        when (equal action '|up|)
+          sum (- value) into aim
 
-          ((string= action "down")
-            (list depth distance (+ aim value))))))
-    input
-    :initial-value (list 0 0 0)))
+        when (equal action '|down|)
+          sum value into aim
 
-(defparameter part1 (subpath1 input))
-(defparameter part2 (subpath2 input))
+        finally (return (* distance depth))))
 
-(format t "Part 1: ~d~%" (* (car part1) (cadr part1)))
-(format t "Part 2: ~d~%" (* (car part2) (cadr part2)))
+(defun read-direction (line)
+  (let ((words (parse-words line)))
+    (list (intern (car words)) (parse-integer (cadr words)))))
+
+(defun answer (&optional (file #P"input.txt"))
+  (let ((input (mapcar #'read-direction (get-lines file))))
+    (format t "Part 1: ~d~%" (subpath1 input))
+    (format t "Part 2: ~d~%" (subpath2 input))))
